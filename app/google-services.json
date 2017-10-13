@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "692294766815",
+    "firebase_url": "https://grocery-planner-09.firebaseio.com",
+    "project_id": "grocery-planner-09",
+    "storage_bucket": "grocery-planner-09.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:692294766815:android:7d77f0064aa9f1b4",
+        "android_client_info": {
+          "package_name": "edu.uta.groceryplanner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "692294766815-0prmuml4hs7kmnsl9f1r7rbvvfrm7s7v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.uta.groceryplanner",
+            "certificate_hash": "27f336725db01cb92f43174ff1915b856c3cc23a"
+          }
+        },
+        {
+          "client_id": "692294766815-u7l99351fq3iri24vmia1m1l0lum1sgd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBE7ZH5IuM6DUWotcaE7PYs_e2hSExQcGQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "692294766815-u7l99351fq3iri24vmia1m1l0lum1sgd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
