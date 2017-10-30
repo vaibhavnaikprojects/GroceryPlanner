@@ -11,9 +11,22 @@ public class ListBean {
     private String updatedDate;
     private String createUserId;
     private String listType;
-    private String listGroupId;
+    private int listGroupId;
     private String listGroupName;
     private String intro;
+
+    public ListBean(int listId, String listName, String createdDate, String updatedDate, String createUserId, String listType, int listGroupId, String listGroupName, String intro) {
+        this.listId = listId;
+        this.listName = listName;
+        this.createdDate = createdDate;
+        this.updatedDate = updatedDate;
+        this.createUserId = createUserId;
+        this.listType = listType;
+        this.listGroupId = listGroupId;
+        this.listGroupName = listGroupName;
+        this.intro = intro;
+    }
+
     public int getListId() {
         return listId;
     }
@@ -62,11 +75,11 @@ public class ListBean {
         this.listType = listType;
     }
 
-    public String getListGroupId() {
+    public int getListGroupId() {
         return listGroupId;
     }
 
-    public void setListGroupId(String listGroupId) {
+    public void setListGroupId(int listGroupId) {
         this.listGroupId = listGroupId;
     }
 
