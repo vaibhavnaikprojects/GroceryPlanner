@@ -1,16 +1,20 @@
 package edu.uta.groceryplanner;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
 import com.google.firebase.auth.FirebaseAuth;
 public class ListFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;
     private TextView listUser;
+    private FragmentTabHost mTabHost;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,9 +25,23 @@ public class ListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view= inflater.inflate(R.layout.fragment_list, container, false);
-        listUser=(TextView) view.findViewById(R.id.listUser);
-        listUser.setText(firebaseAuth.getCurrentUser().getEmail());
-        return view;
+        mTabHost = new FragmentTabHost(getActivity());
+        mTabHost.setup(getActivity(), getChildFragmentManager(), R.layout.fragment_list);
+        Bundle arg1 = new Bundle();
+        arg1.putInt("Arg for Frag1", 1);
+        Bundle arg2 = new Bundle();
+        arg1.putInt("Arg for Frag2", 2);
+        Bundle arg3 = new Bundle();
+        arg1.putInt("Arg for Frag3", 3);
+        mTabHost.addTab(mTabHost.newTabSpec("draft").setIndicator("Draft"),DraftFragment.class,arg1);
+        mTabHost.addTab(mTabHost.newTabSpec("ready").setIndicator("Ready"),ReadyFragment.class,arg2);
+        mTabHost.addTab(mTabHost.newTabSpec("completed").setIndicator("Completed"),CompletedFragment.class,arg3);
+        return mTabHost;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        mTabHost = null;
     }
 }
