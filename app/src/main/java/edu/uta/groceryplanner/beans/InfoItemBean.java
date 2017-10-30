@@ -1,15 +1,8 @@
 package edu.uta.groceryplanner.beans;
 
-import android.graphics.drawable.Drawable;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 public class InfoItemBean {
-    public int imageViewId;
-    public String textViewTitle;
+    private int imageViewId;
+    private String textViewTitle;
 
     public InfoItemBean(int imageViewId, String textViewTitle) {
         this.imageViewId = imageViewId;

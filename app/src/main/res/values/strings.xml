@@ -21,4 +21,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="plus">+</string>
+    <string name="email_hint">Please enter Email</string>
+    <string name="testing">TextView</string>
 </resources>

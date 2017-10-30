@@ -2,7 +2,6 @@ package edu.uta.groceryplanner.adapters;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +14,7 @@ import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
+import edu.uta.groceryplanner.InviteActivity;
 import edu.uta.groceryplanner.LoginActivity;
 import edu.uta.groceryplanner.R;
 import edu.uta.groceryplanner.beans.InfoItemBean;
@@ -49,6 +49,7 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.ViewHolder> {
             public void onClick(View view) {
                 switch (position) {
                     case 0:
+                        context.startActivity(new Intent(context, InviteActivity.class));
                         break;
                     case 1:
                         break;
@@ -76,8 +77,8 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.ViewHolder> {
         public TextView textView;
         public ViewHolder(View itemView) {
             super(itemView);
-            imageView=(ImageView) itemView.findViewById(R.id.imageViewInfoItem);
-            textView=(TextView) itemView.findViewById(R.id.textViewInfoItem);
+            imageView= itemView.findViewById(R.id.imageViewInfoItem);
+            textView= itemView.findViewById(R.id.textViewInfoItem);
 
         }
     }
