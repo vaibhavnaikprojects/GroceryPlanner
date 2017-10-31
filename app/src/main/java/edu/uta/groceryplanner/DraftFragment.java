@@ -83,6 +83,7 @@ public class DraftFragment extends Fragment implements View.OnClickListener{
                 animateFAB();
                 break;
             case R.id.personalFab:
+                startActivity(new Intent(getContext(),PersonalListActivity.class));
                 break;
             case R.id.groupFab:
                 break;
