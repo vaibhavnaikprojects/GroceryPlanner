@@ -1,8 +1,10 @@
 package edu.uta.groceryplanner.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
@@ -17,6 +21,7 @@ import java.util.List;
 import edu.uta.groceryplanner.InviteActivity;
 import edu.uta.groceryplanner.LoginActivity;
 import edu.uta.groceryplanner.R;
+import edu.uta.groceryplanner.RegisterActivity;
 import edu.uta.groceryplanner.beans.InfoItemBean;
 
 /**
@@ -58,10 +63,12 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.ViewHolder> {
                     case 3:
                         break;
                     case 4:
-                        Toast.makeText(context, "signing out", Toast.LENGTH_SHORT).show();
-                        firebaseAuth.signOut();
-                        context.startActivity(new Intent(context, LoginActivity.class));
-                        break;
+                        Toast.makeText(context, "Signing out", Toast.LENGTH_SHORT).show();
+                            LoginManager.getInstance().logOut();
+                            firebaseAuth.signOut();
+                            ((Activity)context).finish();
+                            context.startActivity(new Intent(context, LoginActivity.class));
+                            break;
                 }
             }
         });

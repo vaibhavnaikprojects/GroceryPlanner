@@ -24,4 +24,8 @@
     <string name="plus">+</string>
     <string name="email_hint">Please enter Email</string>
     <string name="testing">TextView</string>
+
+    <string name="facebook_app_id">1762194260488498</string>
+    <string name="fb_login_protocol_scheme">fb1762194260488498</string>
+
 </resources>
