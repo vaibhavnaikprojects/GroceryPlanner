@@ -74,4 +74,11 @@
         android:textAlignment="center"
         android:layout_weight="1"
         android:text="Not registered? Register here" />
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/buttonGoogleSignIn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10sp"/>
+
 </LinearLayout>
