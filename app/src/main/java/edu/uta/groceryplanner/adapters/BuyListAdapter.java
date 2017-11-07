@@ -58,12 +58,14 @@ public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.ViewHold
     @Override
     public void onBindViewHolder(BuyListAdapter.ViewHolder holder, int position) {
         ListBean listBean=beanList.get(position);
-        holder.cardTitleName.setText(listBean.getListName());
         holder.productNames.setText(listBean.getIntro());
-        if("Personal".equalsIgnoreCase(listBean.getListType()))
-            holder.cardTitleImage.setImageResource(R.drawable.common_full_open_on_phone);
-        else
-            holder.cardTitleImage.setImageResource(R.drawable.common_google_signin_btn_icon_dark_disabled);
+        if("Personal".equalsIgnoreCase(listBean.getListType())) {
+            holder.cardTitleName.setText(listBean.getListName());
+            holder.cardTitleImage.setImageResource(R.drawable.ic_person_white_24dp);
+        }else {
+            holder.cardTitleName.setText(listBean.getListName()+" ("+listBean.getListGroupName()+")");
+            holder.cardTitleImage.setImageResource(R.drawable.ic_group_white_24dp);
+        }
     }
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
