@@ -35,14 +35,14 @@ public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.ViewHold
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private LinearLayout title;
         private ImageView cardTitleImage;
-        private TextView cardTitleName,listType,createUserId,createdDate,updatedDate;
+        private TextView cardTitleName,listType,noOfItems,createdDate,updatedDate;
         public ViewHolder(View itemView) {
             super(itemView);
             title= itemView.findViewById(R.id.card_title);
             cardTitleImage= itemView.findViewById(R.id.card_title_image);
             cardTitleName= itemView.findViewById(R.id.card_title_text);
             listType= itemView.findViewById(R.id.list_type);
-            createUserId=itemView.findViewById(R.id.createUserId);
+            noOfItems=itemView.findViewById(R.id.noOfItems);
             createdDate=itemView.findViewById(R.id.created_date);
             updatedDate=itemView.findViewById(R.id.update_date);
             title.setOnClickListener(this);
@@ -61,7 +61,7 @@ public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.ViewHold
     public void onBindViewHolder(BuyListAdapter.ViewHolder holder, int position) {
         ListBean listBean=beanList.get(position);
         holder.cardTitleName.setText(listBean.getListName());
-        holder.createUserId.setText("Total Count: "+listBean.getProductBeans().size());
+        holder.noOfItems.setText("Total Count: "+listBean.getProductBeans().size());
         holder.createdDate.setText("Created Date: "+listBean.getCreatedDate());
         holder.updatedDate.setText("Last Updated Date: "+listBean.getUpdatedDate());
         if("Personal".equalsIgnoreCase(listBean.getListType())) {
