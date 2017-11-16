@@ -27,5 +27,6 @@
 
     <string name="facebook_app_id">1762194260488498</string>
     <string name="fb_login_protocol_scheme">fb1762194260488498</string>
-
+    <string name="previous_sign">&lt;</string>
+    <string name="next_sign">&gt;</string>
 </resources>
