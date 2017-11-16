@@ -1,11 +1,13 @@
 package edu.uta.groceryplanner.beans;
 
+import java.util.List;
+
 /**
  * Created by Vaibhav's Console on 10/29/2017.
  */
 
 public class ListBean {
-    private int listId;
+    private String listId;
     private String listName;
     private String createdDate;
     private String updatedDate;
@@ -13,9 +15,12 @@ public class ListBean {
     private String listType;
     private int listGroupId;
     private String listGroupName;
-    private String intro;
+    private List<ProductBean> productBeans;
 
-    public ListBean(int listId, String listName, String createdDate, String updatedDate, String createUserId, String listType, int listGroupId, String listGroupName, String intro) {
+    public ListBean(){
+
+    }
+    public ListBean(String listId, String listName, String createdDate, String updatedDate, String createUserId, String listType, int listGroupId, String listGroupName) {
         this.listId = listId;
         this.listName = listName;
         this.createdDate = createdDate;
@@ -24,14 +29,13 @@ public class ListBean {
         this.listType = listType;
         this.listGroupId = listGroupId;
         this.listGroupName = listGroupName;
-        this.intro = intro;
     }
 
-    public int getListId() {
+    public String getListId() {
         return listId;
     }
 
-    public void setListId(int listId) {
+    public void setListId(String listId) {
         this.listId = listId;
     }
 
@@ -91,11 +95,11 @@ public class ListBean {
         this.listGroupName = listGroupName;
     }
 
-    public String getIntro() {
-        return intro;
+    public List<ProductBean> getProductBeans() {
+        return productBeans;
     }
 
-    public void setIntro(String intro) {
-        this.intro = intro;
+    public void setProductBeans(List<ProductBean> productBeans) {
+        this.productBeans = productBeans;
     }
 }

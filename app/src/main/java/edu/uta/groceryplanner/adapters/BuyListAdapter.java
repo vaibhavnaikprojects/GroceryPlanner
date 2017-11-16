@@ -35,14 +35,16 @@ public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.ViewHold
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         private LinearLayout title;
         private ImageView cardTitleImage;
-        private TextView cardTitleName;
-        private TextView productNames;
+        private TextView cardTitleName,listType,createUserId,createdDate,updatedDate;
         public ViewHolder(View itemView) {
             super(itemView);
             title= itemView.findViewById(R.id.card_title);
             cardTitleImage= itemView.findViewById(R.id.card_title_image);
             cardTitleName= itemView.findViewById(R.id.card_title_text);
-            productNames= itemView.findViewById(R.id.product_name);
+            listType= itemView.findViewById(R.id.list_type);
+            createUserId=itemView.findViewById(R.id.createUserId);
+            createdDate=itemView.findViewById(R.id.created_date);
+            updatedDate=itemView.findViewById(R.id.update_date);
             title.setOnClickListener(this);
         }
         @Override
@@ -58,12 +60,15 @@ public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.ViewHold
     @Override
     public void onBindViewHolder(BuyListAdapter.ViewHolder holder, int position) {
         ListBean listBean=beanList.get(position);
-        holder.productNames.setText(listBean.getIntro());
+        holder.cardTitleName.setText(listBean.getListName());
+        holder.createUserId.setText("Total Count: "+listBean.getProductBeans().size());
+        holder.createdDate.setText("Created Date: "+listBean.getCreatedDate());
+        holder.updatedDate.setText("Last Updated Date: "+listBean.getUpdatedDate());
         if("Personal".equalsIgnoreCase(listBean.getListType())) {
-            holder.cardTitleName.setText(listBean.getListName());
+            holder.listType.setText(listBean.getListType()+" list");
             holder.cardTitleImage.setImageResource(R.drawable.ic_person_white_24dp);
         }else {
-            holder.cardTitleName.setText(listBean.getListName()+" ("+listBean.getListGroupName()+")");
+            holder.listType.setText("Group Name: "+listBean.getListGroupName());
             holder.cardTitleImage.setImageResource(R.drawable.ic_group_white_24dp);
         }
     }

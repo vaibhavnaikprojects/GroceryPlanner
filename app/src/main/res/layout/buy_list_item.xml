@@ -31,28 +31,62 @@
 
                 <TextView
                     android:id="@+id/card_title_text"
-                    android:layout_width="wrap_content"
+                    android:layout_width="271dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:textColor="#fff"
-                    android:text="@string/testing" />
+                    android:text="@string/testing"
+                    android:textColor="#fff" />
+
                 <ImageView
                     android:id="@+id/card_title_image"
-                    android:layout_width="wrap_content"
+                    android:layout_width="5dp"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/testing"
                     android:layout_weight="1"
+                    android:contentDescription="@string/testing"
                     card_view:srcCompat="@drawable/ic_add_circle_outline_black_24dp" />
             </LinearLayout>
+
             <TextView
-                android:id="@+id/product_name"
-                android:layout_width="match_parent"
+                android:id="@+id/list_type"
+                android:layout_width="175sp"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/card_title"
                 android:padding="8dp"
+                android:text="listType"
                 android:textColor="@color/black"
-                android:textSize="12sp"
-                android:text="@string/testing"/>
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/created_date"
+                android:layout_width="175sp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/list_type"
+                android:padding="8dp"
+                android:text="create date"
+                android:textColor="@color/black"
+                android:textSize="12sp" />
+
+            <TextView
+                android:id="@+id/noOfItems"
+                android:layout_width="175sp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/card_title"
+                android:padding="8dp"
+                android:layout_toEndOf="@+id/list_type"
+                android:text="noOfItems"
+                android:textColor="@color/black"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/update_date"
+                android:layout_width="175sp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/noOfItems"
+                android:padding="8dp"
+                android:layout_toEndOf="@+id/created_date"
+                android:text="updateDate"
+                android:textColor="@color/black"
+                android:textSize="12sp"/>
         </RelativeLayout>
 
 

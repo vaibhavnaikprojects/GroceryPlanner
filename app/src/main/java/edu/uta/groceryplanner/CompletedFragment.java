@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.uta.groceryplanner.adapters.BuyListAdapter;
@@ -45,6 +46,7 @@ public class CompletedFragment extends Fragment {
         recyclerView=view.findViewById(R.id.completedRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        beanList=new ArrayList<ListBean>();
         adapter=new BuyListAdapter(beanList,getContext(),firebaseAuth);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);

@@ -16,23 +16,12 @@
         android:padding="12dp"
         app:srcCompat="@drawable/ic_person_black_24dp" />
 
-
-    <ImageView
-        android:id="@+id/imageViewCreate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:padding="12dp"
-        app:srcCompat="@drawable/ic_check_black_24dp" />
-
     <EditText
         android:id="@+id/textListName"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignBottom="@+id/imageView1"
         android:layout_toEndOf="@+id/imageView1"
-        android:layout_toStartOf="@+id/imageViewCreate"
         android:ems="10"
         android:hint="Enter List Name" />
 
