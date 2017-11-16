@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/GroceryPlanner.iml" filepath="$PROJECT_DIR$/GroceryPlanner.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://C:\AndroidStudioProjects\GroceryPlanner\groceryplannerapp.iml" filepath="C:\AndroidStudioProjects\GroceryPlanner\groceryplannerapp.iml" />
     </modules>
   </component>
 </project>
