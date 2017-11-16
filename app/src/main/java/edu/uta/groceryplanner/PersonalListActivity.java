@@ -32,7 +32,7 @@ public class PersonalListActivity extends AppCompatActivity {
         recyclerView= (RecyclerView) findViewById(R.id.listRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-        beanList=new ArrayList<ProductBean>();
+        beanList=new ArrayList<ProductBean>();/*
         beanList.add(new ProductBean(1,"Milk",1,"2"));
         beanList.add(new ProductBean(1,"Onion",1,"2 lbs"));
         beanList.add(new ProductBean(1,"Cabbage",1,"4"));
@@ -58,7 +58,7 @@ public class PersonalListActivity extends AppCompatActivity {
         beanList.add(new ProductBean(1,"Potato Wedges",1,"1"));
         beanList.add(new ProductBean(1,"Pepsi",1,"32 oz"));
         beanList.add(new ProductBean(1,"Vegetable Oil",1,"64 oz"));
-        beanList.add(new ProductBean(1,"Potato",2,"5 lbs"));
+        beanList.add(new ProductBean(1,"Potato",2,"5 lbs"));*/
 
         adapter=new ProductAdapter(beanList,getBaseContext(),firebaseAuth);
         recyclerView.setItemAnimator(new DefaultItemAnimator());

@@ -7,13 +7,11 @@ import android.support.v4.app.FragmentTabHost;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 public class ListFragment extends Fragment {
 
     private FirebaseAuth firebaseAuth;
-    private TextView listUser;
     private FragmentTabHost mTabHost;
     @Override
     public void onCreate(Bundle savedInstanceState) {

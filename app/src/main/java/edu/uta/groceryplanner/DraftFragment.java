@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +42,8 @@ public class DraftFragment extends Fragment implements View.OnClickListener{
     private FloatingActionButton mainFab,personalFab,groupFab,createGroupFab;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
     private Boolean isFabOpen = false;
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference draftListRef = database.getReference("draftList");
     public DraftFragment() {
         // Required empty public constructor
     }
@@ -55,7 +64,19 @@ public class DraftFragment extends Fragment implements View.OnClickListener{
         recyclerView=view.findViewById(R.id.draftRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        buildList();
+        beanList=new ArrayList<ListBean>();
+        draftListRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                GenericTypeIndicator<List<ListBean>> listBeanIndicator =new GenericTypeIndicator<List<ListBean>>(){};
+                beanList=dataSnapshot.getValue(listBeanIndicator);
+                Log.d("test","true"+beanList);
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                Log.d("test","false");
+            }
+        });
         adapter=new BuyListAdapter(beanList,getContext(),firebaseAuth);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
@@ -122,7 +143,7 @@ public class DraftFragment extends Fragment implements View.OnClickListener{
         }
     };*/
 
-    private List<ListBean> buildList(){
+    /*private List<ListBean> buildList(){
         beanList=new ArrayList<ListBean>();
         beanList.add(new ListBean(1,"September Group 1 List","09/01/2017","09/05/2017","vaibhavsnaik09","Group",1,"UTA Roomies","Banana\nCilantro"));
         beanList.add(new ListBean(2,"October Group 1 List","10/01/2017","10/07/2017","vaibhavsnaik09","Group",1,"UTA Roomies","Mushrooms\nCucumber\nTomato"));
@@ -133,5 +154,5 @@ public class DraftFragment extends Fragment implements View.OnClickListener{
         beanList.add(new ListBean(8,"October Group 2 List","10/10/2017","10/15/2017","vaibhavsnaik09","Group",2,"Meadow","Bread\nJam\nKetchup"));
         beanList.add(new ListBean(9,"August Group 2 List","08/01/2017","08/02/2017","vaibhavsnaik09","Group",2,"Meadow","Onion\nPotato\nBread"));
         return beanList;
-    }
+    }*/
 }

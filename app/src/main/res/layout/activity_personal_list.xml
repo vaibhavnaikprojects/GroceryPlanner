@@ -24,7 +24,7 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
         android:padding="12dp"
-        app:srcCompat="@drawable/ic_create_black_24dp" />
+        app:srcCompat="@drawable/ic_check_black_24dp" />
 
     <EditText
         android:id="@+id/textListName"
