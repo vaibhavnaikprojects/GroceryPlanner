@@ -3,16 +3,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="edu.uta.groceryplanner.DraftFragment">
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/draftRecyclerView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </android.support.v7.widget.RecyclerView>
+    tools:context="edu.uta.groceryplanner.FriendsFragment">
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/groupFab"
+        android:id="@+id/billFab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="24dp"
@@ -21,6 +15,7 @@
         android:visibility="invisible"
         app:backgroundTint="@color/colorTitle2"
         app:elevation="6dp"
+        android:tooltipText="Add Bill"
         app:pressedTranslationZ="12dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
@@ -37,6 +32,7 @@
         app:elevation="6dp"
         app:backgroundTint="@color/colorTitle2"
         app:pressedTranslationZ="12dp"
+        android:tooltipText="Invite or add people"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:src="@drawable/ic_person_add_white_24dp" />
@@ -53,4 +49,5 @@
         app:backgroundTint="@color/colorTitle"
         app:pressedTranslationZ="12dp"
         android:src="@drawable/ic_add_white_24dp" />
+
 </RelativeLayout>

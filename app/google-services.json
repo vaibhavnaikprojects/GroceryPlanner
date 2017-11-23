@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "692294766815-f02jjpv6kg8om2oq8ile1j4ke0fr9f90.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "edu.uta.groceryplanner",
+            "certificate_hash": "944612d04dd1d6a019a3bbdae3493d471e70ee1d"
+          }
+        },
+        {
           "client_id": "692294766815-0prmuml4hs7kmnsl9f1r7rbvvfrm7s7v.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

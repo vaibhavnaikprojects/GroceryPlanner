@@ -12,6 +12,11 @@
         android:title="@string/title_statistics" />
 
     <item
+        android:id="@+id/navigation_expense_splitter"
+        android:icon="@drawable/ic_library_books_black_24dp"
+        android:title="@string/title_expense_splitter" />
+
+    <item
         android:id="@+id/navigation_info"
         android:icon="@drawable/ic_info_black_24dp"
         android:title="@string/title_info" />

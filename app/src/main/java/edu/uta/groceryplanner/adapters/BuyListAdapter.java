@@ -15,6 +15,7 @@ import java.util.List;
 
 import edu.uta.groceryplanner.R;
 import edu.uta.groceryplanner.beans.ListBean;
+import edu.uta.groceryplanner.beans.ProductBean;
 
 /**
  * Created by Vaibhav's Console on 10/29/2017.
@@ -61,7 +62,11 @@ public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.ViewHold
     public void onBindViewHolder(BuyListAdapter.ViewHolder holder, int position) {
         ListBean listBean=beanList.get(position);
         holder.cardTitleName.setText(listBean.getListName());
-        holder.noOfItems.setText("Total Count: "+listBean.getProductBeans().size());
+        List<ProductBean> productBeans= listBean.getProductBeans();
+        if(productBeans!=null)
+            holder.noOfItems.setText("Total Count: "+productBeans.size());
+        else
+            holder.noOfItems.setText("Total Count: 0");
         holder.createdDate.setText("Created Date: "+listBean.getCreatedDate());
         holder.updatedDate.setText("Last Updated Date: "+listBean.getUpdatedDate());
         if("Personal".equalsIgnoreCase(listBean.getListType())) {
