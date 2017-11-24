@@ -6,35 +6,38 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <Button
-        android:id="@+id/btnPrevious"
-        android:layout_width="50dp"
-        android:text="@string/previous_sign"
-        android:layout_height="50dp"
-        android:layout_marginLeft="100dp"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/com_facebook_blue"/>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btnPrevious"
+            android:layout_width="50dp"
+            android:text="@string/previous_sign"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/com_facebook_blue"/>
 
-    <TextView
-        android:id="@+id/textViewMonthYear"
-        android:layout_width="100dp"
-        android:hint="Month/Year"
-        android:gravity="center"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="160dp"
-        android:layout_marginTop="25dp"/>
+        <TextView
+            android:id="@+id/textViewMonthYear"
+            android:layout_width="100dp"
+            android:hint="Month/Year"
+            android:gravity="center"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"/>
 
-    <Button
-        android:id="@+id/btnNext"
-        android:layout_width="50dp"
-        android:text="@string/next_sign"
-        android:layout_height="50dp"
-        android:layout_marginLeft="270dp"
-        android:layout_marginTop="10dp"
-        android:textColor="@color/white"
-        android:backgroundTint="@color/com_facebook_blue"/>
+        <Button
+            android:id="@+id/btnNext"
+            android:layout_width="50dp"
+            android:text="@string/next_sign"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/white"
+            android:backgroundTint="@color/com_facebook_blue"/>
 
+    </LinearLayout>
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pieChart"
         android:layout_width="match_parent"
@@ -43,5 +46,11 @@
         android:minHeight="250dp"
         android:minWidth="200dp"
         ></com.github.mikephil.charting.charts.PieChart>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/statisticsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="350dp"/>
 
 </FrameLayout>
