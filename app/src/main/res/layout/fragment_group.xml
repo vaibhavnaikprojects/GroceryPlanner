@@ -19,7 +19,7 @@
         app:pressedTranslationZ="12dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:src="@drawable/ic_group_add_white_24dp" />
+        android:src="@drawable/ic_library_books_white_24dp" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/groupFab"
