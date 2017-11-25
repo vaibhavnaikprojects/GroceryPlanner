@@ -3,6 +3,7 @@ package edu.uta.groceryplanner.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,6 +15,8 @@ import android.widget.Toast;
 
 import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
@@ -57,6 +60,7 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.ViewHolder> {
                         context.startActivity(new Intent(context, InviteActivity.class));
                         break;
                     case 1:
+                        sendResetPasswordEmail(firebaseAuth.getCurrentUser().getEmail());
                         break;
                     case 2:
                         break;
@@ -72,6 +76,20 @@ public class InfoAdapter extends RecyclerView.Adapter<InfoAdapter.ViewHolder> {
                 }
             }
         });
+    }
+
+    public void sendResetPasswordEmail(String email)
+    {
+        firebaseAuth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("TAG", "Email sent.");
+                            Toast.makeText(context,"Email Sent.",Toast.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 
     @Override
