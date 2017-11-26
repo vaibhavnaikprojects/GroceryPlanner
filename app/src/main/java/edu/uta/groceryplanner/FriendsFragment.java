@@ -1,6 +1,8 @@
 package edu.uta.groceryplanner;
 
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,6 +16,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -62,7 +66,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener{
         recyclerView=view.findViewById(R.id.friendsRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        friends=new ArrayList<FriendsBean>();
+        friends=new ArrayList<>();
         mainFab = view.findViewById(R.id.mainFab);
         personalFab = view.findViewById(R.id.personalFab);
         billFab = view.findViewById(R.id.billFab);
@@ -85,7 +89,28 @@ public class FriendsFragment extends Fragment implements View.OnClickListener{
                 animateFAB();
                 break;
             case R.id.personalFab:
-                startActivity(new Intent(getContext(),PersonalListActivity.class));
+                animateFAB();
+                LayoutInflater li = LayoutInflater.from(getContext());
+                View modal = li.inflate(R.layout.friend_modal, null);
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
+                alertDialogBuilder.setView(modal);
+                final EditText textFriendEmail= modal.findViewById(R.id.TextFriendEmail);
+                //Button button= modal.findViewById(R.id.btnAddFriend);
+                alertDialogBuilder.setCancelable(false)
+                        .setPositiveButton("Add",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int id) {
+                                        Toast.makeText(getContext(),textFriendEmail.getText(),Toast.LENGTH_LONG).show();
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+                AlertDialog alertDialog = alertDialogBuilder.create();
+                alertDialog.show();
                 break;
             case R.id.billFab:
                 break;

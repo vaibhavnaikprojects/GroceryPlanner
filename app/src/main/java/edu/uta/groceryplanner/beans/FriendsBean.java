@@ -7,12 +7,14 @@ package edu.uta.groceryplanner.beans;
 public class FriendsBean {
     private String friendId;
     private String friendName;
+    private String friendEmail;
     private String oweStatus;
     private String owePrice;
 
-    public FriendsBean(String friendId, String friendName, String oweStatus, String owePrice) {
+    public FriendsBean(String friendId, String friendName,String friendEmail, String oweStatus, String owePrice) {
         this.friendId = friendId;
         this.friendName = friendName;
+        this.friendEmail=friendEmail;
         this.oweStatus = oweStatus;
         this.owePrice = owePrice;
     }
@@ -49,11 +51,20 @@ public class FriendsBean {
         this.owePrice = owePrice;
     }
 
+    public String getFriendEmail() {
+        return friendEmail;
+    }
+
+    public void setFriendEmail(String friendEmail) {
+        this.friendEmail = friendEmail;
+    }
+
     @Override
     public String toString() {
         return "FriendsBean{" +
                 "friendId='" + friendId + '\'' +
                 ", friendName='" + friendName + '\'' +
+                ", friendEmail='" + friendEmail + '\'' +
                 ", oweStatus='" + oweStatus + '\'' +
                 ", owePrice='" + owePrice + '\'' +
                 '}';

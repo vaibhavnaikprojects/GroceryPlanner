@@ -1,33 +1,15 @@
 package edu.uta.groceryplanner;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.app.LoaderManager.LoaderCallbacks;
-
-import android.content.CursorLoader;
-import android.content.Loader;
-import android.database.Cursor;
-import android.net.Uri;
-import android.os.AsyncTask;
-
-import android.os.Build;
-import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.inputmethod.EditorInfo;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -57,11 +39,13 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import static android.Manifest.permission.READ_CONTACTS;
+import edu.uta.groceryplanner.beans.UserBean;
 
 /**
  * A login screen that offers login via email/password.
@@ -79,7 +63,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
     private CallbackManager mCallbackManager;
-
+    private DatabaseReference userRef;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,6 +71,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(getApplication());
         firebaseAuth = FirebaseAuth.getInstance();
+        userRef= FirebaseDatabase.getInstance().getReference("users");
 
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -98,13 +83,13 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
             }
         };
 
-        editTextEmail = (EditText) findViewById(R.id.editTextEmail);
-        editTextPassword = (EditText) findViewById(R.id.editTextPassword);
-        buttonLogin = (Button) findViewById(R.id.buttonLogin);
-        textViewSignin = (TextView) findViewById(R.id.textViewSignin);
-        progressBar = (ProgressBar) findViewById(R.id.progressBarRegister);
-        buttonGoogleSignIn = (SignInButton) findViewById(R.id.buttonGoogleSignIn);
-        buttonFacebookSignIn = (LoginButton) findViewById(R.id.buttonFacebookSignIn);
+        editTextEmail = findViewById(R.id.editTextEmail);
+        editTextPassword = findViewById(R.id.editTextPassword);
+        buttonLogin = findViewById(R.id.buttonLogin);
+        textViewSignin =findViewById(R.id.textViewSignin);
+        progressBar = findViewById(R.id.progressBarRegister);
+        buttonGoogleSignIn = findViewById(R.id.buttonGoogleSignIn);
+        buttonFacebookSignIn = findViewById(R.id.buttonFacebookSignIn);
 
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -136,6 +121,10 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         }
         if(view == buttonFacebookSignIn){
             facebookSignIn();
+        }
+        if(view == textViewSignin) {
+            finish();
+            startActivity(new Intent(this,RegisterActivity.class));
         }
     }
 
@@ -191,6 +180,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         public void onSuccess (LoginResult loginResult){
         Log.d("TAG", "facebook:onSuccess:" + loginResult);
         handleFacebookAccessToken(loginResult.getAccessToken());
+
     }
 
         @Override
@@ -237,9 +227,22 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithCredential:success");
-                            FirebaseUser user = firebaseAuth.getCurrentUser();
+                            final FirebaseUser user = firebaseAuth.getCurrentUser();
+                            userRef.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot snapshot) {
+                                    if (snapshot.exists()) {
+                                    }else{
+                                        UserBean userBean=new UserBean(user.getUid(),user.getDisplayName(),user.getEmail());
+                                        userRef.child(user.getUid()).setValue(userBean);
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
                             finish();
                             startActivity(new Intent(getApplicationContext(), HomeActivity.class));
 
@@ -263,6 +266,21 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithCredential:success");
+                            final FirebaseUser user = firebaseAuth.getCurrentUser();
+                            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot snapshot) {
+                                    if (snapshot.child(user.getUid()).exists()) {
+                                    }else{
+                                        UserBean userBean=new UserBean(user.getUid(),user.getDisplayName(),user.getEmail());
+                                        userRef.child(user.getUid()).setValue(userBean);
+                                    }
+                                }
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
                             finish();
                             startActivity(new Intent(getApplicationContext(),HomeActivity.class));
                         } else {

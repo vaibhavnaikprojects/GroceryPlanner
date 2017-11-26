@@ -30,4 +30,14 @@
     <string name="fb_login_protocol_scheme">fb1762194260488498</string>
     <string name="previous_sign">&lt;</string>
     <string name="next_sign">&gt;</string>
+    <string name="expense_summary">Expense Summary</string>
+    <string name="name">Name</string>
+    <string name="email">Email</string>
+    <string name="register">Register</string>
+    <string name="already_registered_signin_here">Already registered? Signin here</string>
+    <string name="add_friend">Add Friend</string>
+    <string name="add_email_id">Add Email ID</string>
+    <string name="grocery_planner">Grocery Planner</string>
+    <string name="login">Login</string>
+    <string name="not_registered_register_here">Not registered? Register here</string>
 </resources>

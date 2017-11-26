@@ -62,7 +62,7 @@ public class DraftFragment extends Fragment implements View.OnClickListener{
         recyclerView=view.findViewById(R.id.draftRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        beanList=new ArrayList<ListBean>();
+        beanList=new ArrayList<>();
         mainFab = view.findViewById(R.id.mainFab);
         personalFab = view.findViewById(R.id.personalFab);
         groupFab = view.findViewById(R.id.groupFab);
@@ -111,6 +111,7 @@ public class DraftFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onStart() {
+
         draftListRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
