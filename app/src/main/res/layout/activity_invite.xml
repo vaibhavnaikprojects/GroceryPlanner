@@ -6,7 +6,7 @@
     tools:context="edu.uta.groceryplanner.InviteActivity">
 
     <EditText
-        android:id="@+id/editText2"
+        android:id="@+id/editTextEmail"
         android:layout_width="320dp"
         android:layout_height="wrap_content"
         android:background="@drawable/edittextbackground"
@@ -16,11 +16,11 @@
         android:layout_alignParentStart="true" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnSendInvite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/editText2"
-        android:layout_toEndOf="@+id/editText2"
+        android:layout_alignBottom="@+id/editTextEmail"
+        android:layout_toEndOf="@+id/editTextEmail"
         android:text="@string/plus"
         android:textSize="@dimen/header1"
         android:layout_alignParentTop="true" />

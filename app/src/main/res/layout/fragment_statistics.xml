@@ -8,15 +8,13 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:gravity="center_horizontal"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="match_parent">
         <Button
             android:id="@+id/btnPrevious"
             android:layout_width="50dp"
             android:text="@string/previous_sign"
             android:layout_height="50dp"
-            android:layout_marginTop="10dp"
             android:textColor="@color/white"
             android:backgroundTint="@color/com_facebook_blue"/>
 
@@ -25,24 +23,32 @@
             android:layout_width="100dp"
             android:hint="Month/Year"
             android:gravity="center"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"/>
+            android:layout_height="wrap_content" />
 
         <Button
             android:id="@+id/btnNext"
             android:layout_width="50dp"
             android:text="@string/next_sign"
             android:layout_height="50dp"
-            android:layout_marginTop="10dp"
             android:textColor="@color/white"
             android:backgroundTint="@color/com_facebook_blue"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Monthly"
+            android:textSize="20dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginRight="20dp"
+            android:textAlignment="viewEnd"/>
 
     </LinearLayout>
     <com.github.mikephil.charting.charts.PieChart
         android:id="@+id/pieChart"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
+        android:backgroundTint="@color/white"
+        android:layout_marginTop="60dp"
         android:minHeight="250dp"
         android:minWidth="200dp"
         ></com.github.mikephil.charting.charts.PieChart>
@@ -51,6 +57,6 @@
         android:id="@+id/statisticsRecyclerView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="350dp"/>
+        android:layout_marginTop="320dp"/>
 
 </FrameLayout>

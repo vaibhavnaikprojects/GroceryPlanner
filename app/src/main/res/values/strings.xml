@@ -40,4 +40,11 @@
     <string name="grocery_planner">Grocery Planner</string>
     <string name="login">Login</string>
     <string name="not_registered_register_here">Not registered? Register here</string>
+
+    <!-- For sending invites  -->
+    <string name="invitation_title">Send Grocery Planner App Invite</string>
+    <string name="invitation_message">Join Grocery Planner and simplify your task of grocery shopping.</string>
+    <string name="invitation_html_content"><html><head></head><body><p>Download the app here %%APPINVITE_LINK_PLACEHOLDER%%</p></body></html></string>
+    <string name="invitation_email_subject">Hey! Check out Grocery Planner App </string>
+
 </resources>

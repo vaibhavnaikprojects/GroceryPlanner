@@ -14,8 +14,9 @@
 
             <TextView
                 android:id="@+id/textViewProductName"
-                android:layout_width="220dp"
+                android:layout_width="180dp"
                 android:layout_height="wrap_content"
+                android:textAlignment="center"
                 android:layout_marginBottom="@dimen/text_margin"
                 android:layout_marginLeft="@dimen/text_margin"
                 android:layout_marginRight="2dp"
@@ -28,6 +29,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textAlignment="center"
                 android:layout_marginBottom="@dimen/text_margin"
                 android:layout_marginLeft="@dimen/text_margin"
                 android:layout_marginRight="2dp"
@@ -40,8 +42,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textAlignment="center"
                 android:layout_marginBottom="@dimen/text_margin"
-                android:layout_marginLeft="70dp"
                 android:layout_marginTop="12dp"
                 android:hint="Percentage"
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"/>
