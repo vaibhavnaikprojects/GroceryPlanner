@@ -11,13 +11,13 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -31,6 +31,7 @@ import java.util.List;
 
 import edu.uta.groceryplanner.adapters.FriendsAdapter;
 import edu.uta.groceryplanner.beans.FriendsBean;
+import edu.uta.groceryplanner.beans.UserBean;
 
 
 /**
@@ -41,7 +42,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener{
     private FloatingActionButton mainFab,personalFab,billFab;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
     private Boolean isFabOpen = false;
-    DatabaseReference friendsRef;
+    DatabaseReference friendsRef,usersRef;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private List<FriendsBean> friends;
@@ -57,6 +58,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener{
             startActivity(new Intent(getContext(),LoginActivity.class));
         }
         friendsRef = FirebaseDatabase.getInstance().getReference("friends").child(firebaseAuth.getCurrentUser().getUid());
+        usersRef= FirebaseDatabase.getInstance().getReference("users");
     }
 
     @Override
@@ -95,12 +97,36 @@ public class FriendsFragment extends Fragment implements View.OnClickListener{
                 AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(getContext());
                 alertDialogBuilder.setView(modal);
                 final EditText textFriendEmail= modal.findViewById(R.id.TextFriendEmail);
-                //Button button= modal.findViewById(R.id.btnAddFriend);
+                final String friendEmail=textFriendEmail.getText().toString();
                 alertDialogBuilder.setCancelable(false)
                         .setPositiveButton("Add",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int id) {
-                                        Toast.makeText(getContext(),textFriendEmail.getText(),Toast.LENGTH_LONG).show();
+                                        /*if(TextUtils.isEmpty(friendEmail)){
+                                            textFriendEmail.setError("EmailId cannot be empty",getResources().getDrawable(R.drawable.ic_warning_black_24dp));
+                                            return;
+                                        }
+                                        else if(friendEmail.equalsIgnoreCase(firebaseAuth.getCurrentUser().getEmail())){
+                                            textFriendEmail.setError("EmailId and User Email cannot be same",getResources().getDrawable(R.drawable.ic_warning_black_24dp));
+                                            return;
+                                        }*/
+                                        usersRef.orderByChild("emailId").equalTo(textFriendEmail.getText().toString()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot snapshot) {
+                                                if (snapshot.exists()) {
+                                                    Log.v("user ",snapshot.getValue().toString());
+                                                    UserBean userBean=snapshot.getValue(UserBean.class);
+                                                    String id=friendsRef.push().getKey();
+                                                    friendsRef.child(id).setValue(new FriendsBean(userBean.getUserId(),userBean.getUserName(),userBean.getEmailId(),"resolved",0));
+                                                }else{
+
+                                                }
+                                            }
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
                                     }
                                 })
                         .setNegativeButton("Cancel",

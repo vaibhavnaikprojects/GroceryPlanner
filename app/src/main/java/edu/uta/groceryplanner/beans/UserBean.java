@@ -5,27 +5,27 @@ package edu.uta.groceryplanner.beans;
  */
 
 public class UserBean {
-    private String uid;
+    private String userId;
     private String userName;
     private String emailId;
+    private String status;
 
     public UserBean() {
     }
 
-    public UserBean(String uid, String userName, String emailId) {
-        this.uid = uid;
+    public UserBean(String userId, String userName, String emailId,String status) {
+        this.userId = userId;
         this.userName = userName;
         this.emailId = emailId;
+        this.status=status;
     }
 
-    public String getUid() {
-        return uid;
+    public String getUserId() {
+        return userId;
     }
-
-    public void setUid(String uid) {
-        this.uid = uid;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
-
     public String getUserName() {
         return userName;
     }
@@ -42,12 +42,21 @@ public class UserBean {
         this.emailId = emailId;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public String toString() {
         return "UserBean{" +
-                "uid='" + uid + '\'' +
+                "userId='" + userId + '\'' +
                 ", userName='" + userName + '\'' +
                 ", emailId='" + emailId + '\'' +
+                ", status='" + status + '\'' +
                 '}';
     }
 }

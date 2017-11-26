@@ -144,11 +144,11 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
         String email = editTextEmail.getText().toString().trim();
         String pass = editTextPassword.getText().toString().trim();
         if (TextUtils.isEmpty(email)) {
-            Snackbar.make(view, "Enter Email", Snackbar.LENGTH_SHORT).show();
+            editTextEmail.setError("Enter Email",getResources().getDrawable(R.drawable.ic_warning_black_24dp));
             return;
         }
         if (TextUtils.isEmpty(pass)) {
-            Snackbar.make(view, "Enter Password", Snackbar.LENGTH_SHORT).show();
+            editTextPassword.setError("Enter Password",getResources().getDrawable(R.drawable.ic_warning_black_24dp));
             return;
         }
         progressBar.setVisibility(View.VISIBLE);
@@ -229,12 +229,12 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                         if (task.isSuccessful()) {
                             Log.d("TAG", "signInWithCredential:success");
                             final FirebaseUser user = firebaseAuth.getCurrentUser();
-                            userRef.child(user.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                            userRef.orderByChild("emailId").equalTo(user.getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot snapshot) {
                                     if (snapshot.exists()) {
                                     }else{
-                                        UserBean userBean=new UserBean(user.getUid(),user.getDisplayName(),user.getEmail());
+                                        UserBean userBean=new UserBean(user.getUid(),user.getDisplayName(),user.getEmail(),"active");
                                         userRef.child(user.getUid()).setValue(userBean);
                                     }
                                 }
@@ -267,12 +267,12 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener 
                             // Sign in success, update UI with the signed-in user's information
                             Log.d("TAG", "signInWithCredential:success");
                             final FirebaseUser user = firebaseAuth.getCurrentUser();
-                            userRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                            userRef.orderByChild("emailId").equalTo(user.getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot snapshot) {
                                     if (snapshot.child(user.getUid()).exists()) {
                                     }else{
-                                        UserBean userBean=new UserBean(user.getUid(),user.getDisplayName(),user.getEmail());
+                                        UserBean userBean=new UserBean(user.getUid(),user.getDisplayName(),user.getEmail(),"active");
                                         userRef.child(user.getUid()).setValue(userBean);
                                     }
                                 }

@@ -9,9 +9,12 @@ public class FriendsBean {
     private String friendName;
     private String friendEmail;
     private String oweStatus;
-    private String owePrice;
+    private double owePrice;
 
-    public FriendsBean(String friendId, String friendName,String friendEmail, String oweStatus, String owePrice) {
+    public FriendsBean() {
+    }
+
+    public FriendsBean(String friendId, String friendName, String friendEmail, String oweStatus, double owePrice) {
         this.friendId = friendId;
         this.friendName = friendName;
         this.friendEmail=friendEmail;
@@ -43,11 +46,11 @@ public class FriendsBean {
         this.oweStatus = oweStatus;
     }
 
-    public String getOwePrice() {
+    public double getOwePrice() {
         return owePrice;
     }
 
-    public void setOwePrice(String owePrice) {
+    public void setOwePrice(double owePrice) {
         this.owePrice = owePrice;
     }
 

@@ -53,7 +53,7 @@ public class FriendsAdapter extends RecyclerView.Adapter<FriendsAdapter.ViewHold
         holder.textViewUserName.setText(friendsBean.getFriendName());
         holder.oweMessage.setText(friendsBean.getOweStatus());
         if(!"resolved".equalsIgnoreCase(friendsBean.getOweStatus()))
-            holder.owePrice.setText(friendsBean.getOwePrice());
+            holder.owePrice.setText(""+friendsBean.getOwePrice());
         else
             holder.owePrice.setText("");
     }
