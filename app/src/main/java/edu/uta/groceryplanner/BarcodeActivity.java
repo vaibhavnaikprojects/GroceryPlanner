@@ -16,9 +16,9 @@
 
 package edu.uta.groceryplanner;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.app.Activity;
 import android.util.Log;
 import android.view.View;
 import android.widget.CompoundButton;
@@ -31,7 +31,7 @@ import com.google.android.gms.vision.barcode.Barcode;
  * Main activity demonstrating how to pass extra parameters to an activity that
  * reads barcodes.
  */
-public class BarcodeMain extends Activity implements View.OnClickListener {
+public class BarcodeActivity extends Activity implements View.OnClickListener {
 
     // use a compound button so either checkbox or switch widgets work.
     private CompoundButton autoFocus;
@@ -40,11 +40,11 @@ public class BarcodeMain extends Activity implements View.OnClickListener {
     private TextView barcodeValue;
 
     private static final int RC_BARCODE_CAPTURE = 9001;
-    private static final String TAG = "BarcodeMain";
+    private static final String TAG = "BarcodeActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.barcode_activity_main);
+        setContentView(R.layout.activity_barcode);
 
         statusMessage = (TextView)findViewById(R.id.status_message);
         barcodeValue = (TextView)findViewById(R.id.barcode_value);
