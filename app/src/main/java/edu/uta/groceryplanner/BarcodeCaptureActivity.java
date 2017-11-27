@@ -90,7 +90,7 @@ public final class BarcodeCaptureActivity extends AppCompatActivity implements B
         mPreview = (CameraSourcePreview) findViewById(R.id.preview);
         mGraphicOverlay = (GraphicOverlay<BarcodeGraphic>) findViewById(R.id.graphicOverlay);
 
-        // read parameters from the intent used to launch the activity.
+        // setting default true and false for autofocus and use of flash.
         boolean autoFocus = true;
         boolean useFlash = false;
 
