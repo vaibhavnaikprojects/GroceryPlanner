@@ -171,6 +171,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
                 dialog.show();
                 break;
             case R.id.billFab:
+                startActivity(new Intent(getContext(),AddBillActivity.class));
                 break;
         }
     }

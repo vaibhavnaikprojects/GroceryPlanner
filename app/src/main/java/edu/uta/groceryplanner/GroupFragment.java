@@ -68,6 +68,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener{
                 startActivity(new Intent(getContext(),PersonalListActivity.class));
                 break;
             case R.id.billFab:
+                startActivity(new Intent(getContext(), AddBillActivity.class));
                 break;
         }
     }
