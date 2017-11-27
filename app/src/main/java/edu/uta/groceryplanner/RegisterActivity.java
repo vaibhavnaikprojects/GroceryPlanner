@@ -90,17 +90,16 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                         if (task.isSuccessful()){
                             final FirebaseUser user=firebaseAuth.getCurrentUser();
                             UserProfileChangeRequest profileUpdate = new UserProfileChangeRequest.Builder()
-                                    .setDisplayName(editTextName.getText().toString().trim())
+                                    .setDisplayName(name)
                                     .build();
                             if(user!=null)
                                 user.updateProfile(profileUpdate);
                             Snackbar.make(view, "Registered Successfully", Snackbar.LENGTH_SHORT).show();
-                            final UserBean userBean=new UserBean(user.getUid(),name,user.getEmail(),"active");
                             userRef.orderByChild("emailId").equalTo(user.getEmail()).addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(DataSnapshot snapshot) {
-                                    if (snapshot.child(user.getUid()).exists()) {
-                                    }else{
+                                    if (!snapshot.child(user.getUid()).exists()) {
+                                        UserBean userBean=new UserBean(user.getUid(),name,user.getEmail(),"active");
                                         userRef.child(user.getUid()).setValue(userBean);
                                     }
                                 }
