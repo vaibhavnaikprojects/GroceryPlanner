@@ -27,5 +27,16 @@
         android:inputType="textEmailAddress"
         android:padding="@dimen/activity_horizontal_margin" />
 
+    <Button
+        android:id="@+id/btnFriendInvite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/TextFriendEmail"
+        android:layout_centerHorizontal="true"
+        android:textColor="#fff"
+        android:background="@color/colorPrimaryDark"
+        android:visibility="gone"
+        android:text="Invite" />
+
 
 </RelativeLayout>
