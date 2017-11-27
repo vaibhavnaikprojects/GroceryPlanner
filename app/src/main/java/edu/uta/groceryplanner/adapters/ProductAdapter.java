@@ -24,12 +24,11 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
     private List<ProductBean> productBeans;
     private Context context;
     private FirebaseAuth firebaseAuth;
-    private BuyListAdapter.OnItemClickListener mItemClickListener;
+    private ProductAdapter.OnItemClickListener mItemClickListener;
 
-    public ProductAdapter(List<ProductBean> productBeans, Context context,FirebaseAuth firebaseAuth){
+    public ProductAdapter(List<ProductBean> productBeans, Context context){
         this.productBeans=productBeans;
         this.context=context;
-        this.firebaseAuth=firebaseAuth;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -50,8 +49,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         }
     }
 
-
-
     @Override
     public ProductAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new ProductAdapter.ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.draft_product_list_item,parent,false));
@@ -62,14 +59,10 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ViewHold
         ProductBean productBean=productBeans.get(position);
         holder.productName.setText(productBean.getProductName());
         holder.productQuantity.setText(productBean.getQuantity()+"");
-
     }
 
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
-    }
-    public void setOnItemClickListener(BuyListAdapter.OnItemClickListener onItemClickListener) {
-        this.mItemClickListener = onItemClickListener;
     }
 
     @Override

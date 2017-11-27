@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,6 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import edu.uta.groceryplanner.adapters.BuyListAdapter;
+import edu.uta.groceryplanner.beans.GroupBean;
 import edu.uta.groceryplanner.beans.ListBean;
 
 
@@ -36,11 +38,12 @@ public class DraftFragment extends Fragment implements View.OnClickListener{
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private List<ListBean> beanList;
+    private List<GroupBean> groupBeans;
     private FirebaseAuth firebaseAuth;
     private FloatingActionButton mainFab,personalFab,groupFab;
     private Animation fab_open,fab_close,rotate_forward,rotate_backward;
     private Boolean isFabOpen = false;
-    DatabaseReference draftListRef;
+    DatabaseReference listRef,groupRef;
     public DraftFragment() {
         // Required empty public constructor
     }
@@ -49,10 +52,11 @@ public class DraftFragment extends Fragment implements View.OnClickListener{
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         firebaseAuth=FirebaseAuth.getInstance();
-        draftListRef = FirebaseDatabase.getInstance().getReference("draftList");
         if(firebaseAuth==null){
             startActivity(new Intent(getContext(),LoginActivity.class));
         }
+        listRef = FirebaseDatabase.getInstance().getReference("Lists").child(firebaseAuth.getCurrentUser().getUid());
+        groupRef=FirebaseDatabase.getInstance().getReference("Groups");
     }
 
     @Override
@@ -112,15 +116,16 @@ public class DraftFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onStart() {
 
-        draftListRef.addValueEventListener(new ValueEventListener() {
+        listRef.orderByChild("listState").equalTo("draft").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 beanList.clear();
                 for (DataSnapshot dataSnap : dataSnapshot.getChildren()){
                     ListBean listBean=dataSnap.getValue(ListBean.class);
+                    Log.v("listBean",listBean.toString());
                     beanList.add(listBean);
                 }
-                adapter=new BuyListAdapter(beanList,getContext(),firebaseAuth);
+                adapter=new BuyListAdapter(beanList,getContext(),firebaseAuth,onItemClickListener);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(adapter);
             }
@@ -131,4 +136,21 @@ public class DraftFragment extends Fragment implements View.OnClickListener{
         });
         super.onStart();
     }
+
+    BuyListAdapter.OnItemClickListener onItemClickListener=new BuyListAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(View view, int position) {
+            ListBean listBean=beanList.get(position);
+            if("personal".equalsIgnoreCase(listBean.getListType())) {
+                Intent intent = new Intent(getContext(), PersonalListActivity.class);
+                intent.putExtra("list", listBean);
+                startActivity(intent);
+            }
+            else{
+                /*Intent intent = new Intent(getContext(), GroupListActivity.class);
+                intent.putExtra("list", listBean);
+                startActivity(intent);*/
+            }
+        }
+    };
 }

@@ -52,6 +52,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".AddBillActivity"></activity>
+        <activity android:name=".ReadyListActivity"></activity>
     </application>
 
 </manifest>

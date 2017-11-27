@@ -8,11 +8,17 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +31,7 @@ public class ReadyFragment extends Fragment {
     private RecyclerView.Adapter adapter;
     private List<ListBean> beanList;
     private FirebaseAuth firebaseAuth;
-
+    DatabaseReference listRef;
     public ReadyFragment() {
         // Required empty public constructor
     }
@@ -37,6 +43,7 @@ public class ReadyFragment extends Fragment {
         if(firebaseAuth==null){
             startActivity(new Intent(getContext(),LoginActivity.class));
         }
+        listRef = FirebaseDatabase.getInstance().getReference("Lists").child(firebaseAuth.getCurrentUser().getUid());
     }
 
     @Override
@@ -47,16 +54,38 @@ public class ReadyFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         beanList=new ArrayList<ListBean>();
-        adapter=new BuyListAdapter(beanList,getContext(),firebaseAuth);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-        //adapter.setOnItemClickListener(onItemClickListener);
+
         return view;
     }
-    /*adapter.OnItemClickListener onItemClickListener=new adapter.OnItemClickListener(){
+    BuyListAdapter.OnItemClickListener onItemClickListener=new BuyListAdapter.OnItemClickListener(){
         @Override
         public void onItemClick(View view, int position) {
+            ListBean listBean=beanList.get(position);
+            Intent intent = new Intent(getContext(), ReadyListActivity.class);
+            intent.putExtra("list", listBean);
+            startActivity(intent);
         }
-    };*/
+    };
+    @Override
+    public void onStart() {
+        listRef.orderByChild("listState").equalTo("ready").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                beanList.clear();
+                for (DataSnapshot dataSnap : dataSnapshot.getChildren()){
+                    ListBean listBean=dataSnap.getValue(ListBean.class);
+                    Log.v("listBean",listBean.toString());
+                    beanList.add(listBean);
+                }
+                adapter=new BuyListAdapter(beanList,getContext(),firebaseAuth,onItemClickListener);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(adapter);
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
 
+            }
+        });
+        super.onStart();
+    }
 }

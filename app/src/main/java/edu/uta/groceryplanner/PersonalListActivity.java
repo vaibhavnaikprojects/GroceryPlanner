@@ -2,6 +2,7 @@ package edu.uta.groceryplanner;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
@@ -10,12 +11,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,7 +38,11 @@ public class PersonalListActivity extends AppCompatActivity {
     private List<ProductBean> productBeans;
     private FirebaseAuth firebaseAuth;
     private EditText mTextListName;
-    DatabaseReference draftListRef;
+    DatabaseReference listRef, productsRef;
+    private ImageButton imageButtonMenu,imageButtonAddPredifined;
+
+    ListBean listBean;
+    String listId=null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,20 +52,76 @@ public class PersonalListActivity extends AppCompatActivity {
             startActivity(new Intent(getBaseContext(), LoginActivity.class));
         }
         setContentView(R.layout.activity_personal_list);
-        draftListRef = FirebaseDatabase.getInstance().getReference("draftList");
-        setTitle("New List");
+        listRef = FirebaseDatabase.getInstance().getReference("Lists").child(firebaseAuth.getCurrentUser().getUid());
+        Intent intent = getIntent();
+        listBean = (ListBean) intent.getSerializableExtra("list");
+        if (listBean == null) {
+            setTitle("New List");
+            listId = listRef.push().getKey();
+            productsRef = FirebaseDatabase.getInstance().getReference("Products").child(listId);
+        }else {
+            setTitle(listBean.getListName());
+            listId=listBean.getListId();
+            productsRef = FirebaseDatabase.getInstance().getReference("Products").child(listBean.getListId());
+        }
         getSupportActionBar().setIcon(R.drawable.ic_person_white_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mTextListName = (EditText) findViewById(R.id.textListName);
-        recyclerView = (RecyclerView) findViewById(R.id.listRecyclerView);
+        mTextListName = findViewById(R.id.textListName);
+        if(listBean!=null)
+            mTextListName.setText(listBean.getListName());
+        recyclerView = findViewById(R.id.listRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
-        productBeans = new ArrayList<ProductBean>();
-        adapter = new ProductAdapter(productBeans, getBaseContext(), firebaseAuth);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(adapter);
-    }
+        productBeans = new ArrayList<>();
+        imageButtonMenu=findViewById(R.id.imageButtonMenu);
+        imageButtonAddPredifined=findViewById(R.id.imageButtonAddPredifined);
+        imageButtonMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                openDialog();
+            }
+        });
+        imageButtonAddPredifined.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+            }
+        });
+    }
+    private void openDialog() {
+        View view = getLayoutInflater().inflate(R.layout.list_menu, null);
+        final BottomSheetDialog dialog = new BottomSheetDialog(this);
+        dialog.setContentView(view);
+        TextView listMenuTitle = view.findViewById(R.id.menuTitle);
+        TextView listMenuReady = view.findViewById(R.id.listMenuReady);
+        TextView listMenuShare =view.findViewById(R.id.listMenuShare);
+        TextView listMenuDelete =view.findViewById(R.id.listMenuDelete);
+        listMenuTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        listMenuReady.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        listMenuShare.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        listMenuDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -65,17 +131,20 @@ public class PersonalListActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("test",""+item.getItemId());
-        switch (item.getItemId()){
+        Log.d("test", "" + item.getItemId());
+        switch (item.getItemId()) {
             case R.id.menu_check:
                 if (mTextListName.getText() == null || "".equalsIgnoreCase(String.valueOf(mTextListName.getText())))
-                    Toast.makeText(getBaseContext(), "Please enter list name", Toast.LENGTH_LONG);
-                else{
-                    String id=draftListRef.push().getKey();
+                    mTextListName.setError("Please enter list name", getResources().getDrawable(R.drawable.ic_warning_black_24dp));
+                else {
                     String date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
-                    ListBean listBean=new ListBean(id,String.valueOf(mTextListName.getText()), date, date, firebaseAuth.getCurrentUser().getEmail(), "Personal",0,null);
-                    listBean.setProductBeans(productBeans);
-                    draftListRef.child(id).setValue(listBean);
+                    if (listBean == null) {
+                        String id = listRef.push().getKey();
+                        ListBean newList = new ListBean(id, String.valueOf(mTextListName.getText()), date, date, firebaseAuth.getCurrentUser().getUid(), "Personal","draft",0, null, 0);
+                        listRef.child(id).setValue(newList);
+                    } else {
+
+                    }
                 }
                 break;
         }
@@ -83,5 +152,51 @@ public class PersonalListActivity extends AppCompatActivity {
         startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         return super.onOptionsItemSelected(item);
     }
+
+    @Override
+    public void onStart() {
+        if (productsRef != null) {
+            productListener();
+        }
+        super.onStart();
+    }
+
+    private void productListener(){
+        productsRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                productBeans.clear();
+                for (DataSnapshot dataSnap : dataSnapshot.getChildren()) {
+                    ProductBean productBean = dataSnap.getValue(ProductBean.class);
+                    productBeans.add(productBean);
+                }
+                adapter = new ProductAdapter(productBeans, getApplicationContext());
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                recyclerView.setAdapter(adapter);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /*PersonalListActivity.OnItemClickListener onItemClickListener=new PersonalListActivity.OnItemClickListener() {
+        @Override
+        public void onItemClick(View view, int position) {
+            ListBean listBean=beanList.get(position);
+            if("personal".equalsIgnoreCase(listBean.getListType())) {
+                Intent intent = new Intent(getContext(), PersonalListActivity.class);
+                intent.putExtra("list", listBean);
+                startActivity(intent);
+            }
+            else{
+                Intent intent = new Intent(getContext(), GroupListActivity.class);
+                intent.putExtra("list", listBean);
+                startActivity(intent);
+            }
+        }
+    };*/
 }
 

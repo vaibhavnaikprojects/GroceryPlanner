@@ -1,34 +1,37 @@
 package edu.uta.groceryplanner.beans;
 
-import java.util.List;
+import java.io.Serializable;
 
 /**
  * Created by Vaibhav's Console on 10/29/2017.
  */
 
-public class ListBean {
+public class ListBean implements Serializable{
     private String listId;
     private String listName;
     private String createdDate;
     private String updatedDate;
     private String createUserId;
     private String listType;
+    private String listState;
     private int listGroupId;
     private String listGroupName;
-    private List<ProductBean> productBeans;
+    private int productCount;
 
     public ListBean(){
 
     }
-    public ListBean(String listId, String listName, String createdDate, String updatedDate, String createUserId, String listType, int listGroupId, String listGroupName) {
+    public ListBean(String listId, String listName, String createdDate, String updatedDate, String createUserId, String listType,String listState, int listGroupId, String listGroupName,int productCount) {
         this.listId = listId;
         this.listName = listName;
         this.createdDate = createdDate;
         this.updatedDate = updatedDate;
         this.createUserId = createUserId;
         this.listType = listType;
+        this.listState=listState;
         this.listGroupId = listGroupId;
         this.listGroupName = listGroupName;
+        this.productCount=productCount;
     }
 
     public String getListId() {
@@ -95,11 +98,34 @@ public class ListBean {
         this.listGroupName = listGroupName;
     }
 
-    public List<ProductBean> getProductBeans() {
-        return productBeans;
+    public int getProductCount() {
+        return productCount;
+    }
+    public void setProductCount(int productCount) {
+        this.productCount = productCount;
     }
 
-    public void setProductBeans(List<ProductBean> productBeans) {
-        this.productBeans = productBeans;
+    public String getListState() {
+        return listState;
+    }
+
+    public void setListState(String listState) {
+        this.listState = listState;
+    }
+
+    @Override
+    public String toString() {
+        return "ListBean{" +
+                "listId='" + listId + '\'' +
+                ", listName='" + listName + '\'' +
+                ", createdDate='" + createdDate + '\'' +
+                ", updatedDate='" + updatedDate + '\'' +
+                ", createUserId='" + createUserId + '\'' +
+                ", listType='" + listType + '\'' +
+                ", listState='" + listState + '\'' +
+                ", listGroupId=" + listGroupId +
+                ", listGroupName='" + listGroupName + '\'' +
+                ", productCount=" + productCount +
+                '}';
     }
 }

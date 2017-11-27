@@ -47,16 +47,15 @@ public class CompletedFragment extends Fragment {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         beanList=new ArrayList<ListBean>();
-        adapter=new BuyListAdapter(beanList,getContext(),firebaseAuth);
+        adapter=new BuyListAdapter(beanList,getContext(),firebaseAuth,onItemClickListener);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(adapter);
-        //adapter.setOnItemClickListener(onItemClickListener);
         return view;
     }
-    /*adapter.OnItemClickListener onItemClickListener=new adapter.OnItemClickListener(){
+    BuyListAdapter.OnItemClickListener onItemClickListener=new BuyListAdapter.OnItemClickListener(){
         @Override
         public void onItemClick(View view, int position) {
 
         }
-    };*/
+    };
 }

@@ -12,24 +12,27 @@ public class ProductBean {
     private String quantity;
     private double rate;
     private double cost;
+    private String status;
 
     public ProductBean(){
 
     }
-    public ProductBean(int productId, String productName, int productTypeId, String quantity) {
+    public ProductBean(int productId, String productName, int productTypeId, String quantity,String status) {
         this.productId = productId;
         this.productName = productName;
         this.productTypeId = productTypeId;
         this.quantity = quantity;
+        this.status=status;
     }
 
-    public ProductBean(int productId, String productName, int productTypeId, String quantity, double rate, double cost) {
+    public ProductBean(int productId, String productName, int productTypeId, String quantity, double rate, double cost,String status) {
         this.productId = productId;
         this.productName = productName;
         this.productTypeId = productTypeId;
         this.quantity = quantity;
         this.rate = rate;
         this.cost = cost;
+        this.status=status;
     }
 
     public int getProductId() {
@@ -86,5 +89,27 @@ public class ProductBean {
 
     public void setCost(double cost) {
         this.cost = cost;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Override
+    public String toString() {
+        return "ProductBean{" +
+                "productId=" + productId +
+                ", productName='" + productName + '\'' +
+                ", productTypeId=" + productTypeId +
+                ", productTypeName='" + productTypeName + '\'' +
+                ", quantity='" + quantity + '\'' +
+                ", rate=" + rate +
+                ", cost=" + cost +
+                ", status='" + status + '\'' +
+                '}';
     }
 }

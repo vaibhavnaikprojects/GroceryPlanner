@@ -15,7 +15,6 @@ import java.util.List;
 
 import edu.uta.groceryplanner.R;
 import edu.uta.groceryplanner.beans.ListBean;
-import edu.uta.groceryplanner.beans.ProductBean;
 
 /**
  * Created by Vaibhav's Console on 10/29/2017.
@@ -27,10 +26,11 @@ public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.ViewHold
     private FirebaseAuth firebaseAuth;
     private OnItemClickListener mItemClickListener;
 
-    public BuyListAdapter(List<ListBean> beanList, Context context,FirebaseAuth firebaseAuth) {
+    public BuyListAdapter(List<ListBean> beanList, Context context,FirebaseAuth firebaseAuth,OnItemClickListener onItemClickListener) {
         this.beanList = beanList;
         this.context = context;
         this.firebaseAuth=firebaseAuth;
+        this.mItemClickListener=onItemClickListener;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
@@ -53,7 +53,6 @@ public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.ViewHold
             if (mItemClickListener != null) mItemClickListener.onItemClick(itemView,getPosition());
         }
     }
-
     @Override
     public BuyListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         return new BuyListAdapter.ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.buy_list_item,parent,false));
@@ -62,13 +61,9 @@ public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.ViewHold
     public void onBindViewHolder(BuyListAdapter.ViewHolder holder, int position) {
         ListBean listBean=beanList.get(position);
         holder.cardTitleName.setText(listBean.getListName());
-        List<ProductBean> productBeans= listBean.getProductBeans();
-        if(productBeans!=null)
-            holder.noOfItems.setText("Total Count: "+productBeans.size());
-        else
-            holder.noOfItems.setText("Total Count: 0");
-        holder.createdDate.setText("Created Date: "+listBean.getCreatedDate());
-        holder.updatedDate.setText("Last Updated Date: "+listBean.getUpdatedDate());
+        holder.noOfItems.setText("Product Count: "+listBean.getProductCount());
+        holder.createdDate.setText("Created Date: "+listBean.getCreatedDate().split(" ")[0]);
+        holder.updatedDate.setText("Updated Date: "+listBean.getUpdatedDate().split(" ")[0]);
         if("Personal".equalsIgnoreCase(listBean.getListType())) {
             holder.listType.setText(listBean.getListType()+" list");
             holder.cardTitleImage.setImageResource(R.drawable.ic_person_white_24dp);
@@ -79,9 +74,6 @@ public class BuyListAdapter extends RecyclerView.Adapter<BuyListAdapter.ViewHold
     }
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
-    }
-    public void setOnItemClickListener(OnItemClickListener onItemClickListener) {
-        this.mItemClickListener = onItemClickListener;
     }
     @Override
     public int getItemCount() {
