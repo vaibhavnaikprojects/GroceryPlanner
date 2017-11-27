@@ -11,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,12 +113,11 @@ public class FriendsFragment extends Fragment implements View.OnClickListener{
                                             @Override
                                             public void onDataChange(DataSnapshot snapshot) {
                                                 if (snapshot.exists()) {
-                                                    Log.v("user ",snapshot.getValue().toString());
-                                                    UserBean userBean=snapshot.getValue(UserBean.class);
-                                                    String id=friendsRef.push().getKey();
-                                                    friendsRef.child(id).setValue(new FriendsBean(userBean.getUserId(),userBean.getUserName(),userBean.getEmailId(),"resolved",0));
+                                                    for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+                                                        UserBean userBean=dataSnapshot.getValue(UserBean.class);
+                                                        friendsRef.child(userBean.getUserId()).setValue(new FriendsBean(userBean.getUserId(),userBean.getUserName(),userBean.getEmailId(),"resolved",0));
+                                                    }
                                                 }else{
-
                                                 }
                                             }
                                             @Override
@@ -132,6 +130,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener{
                         .setNegativeButton("Cancel",
                                 new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog,int id) {
+                                        animateFAB();
                                         dialog.cancel();
                                     }
                                 });
