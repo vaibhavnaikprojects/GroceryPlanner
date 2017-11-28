@@ -2,6 +2,7 @@ package edu.uta.groceryplanner;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -36,7 +37,7 @@ public class ReadyListActivity extends AppCompatActivity {
     private List<ProductBean> productBeans;
     private FirebaseAuth firebaseAuth;
     private TextView mTextListName;
-    DatabaseReference productsRef;
+    DatabaseReference listRef,productsRef;
     ListBean listBean;
     private FloatingActionButton mainFab;
 
@@ -51,7 +52,9 @@ public class ReadyListActivity extends AppCompatActivity {
         Intent intent = getIntent();
         listBean = (ListBean) intent.getSerializableExtra("list");
         setTitle(listBean.getListName());
+        listRef=FirebaseDatabase.getInstance().getReference("Lists").child(firebaseAuth.getCurrentUser().getUid());
         productsRef = FirebaseDatabase.getInstance().getReference("Products").child(listBean.getListId());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mTextListName = findViewById(R.id.textListName);
         mainFab = findViewById(R.id.mainFab);
         mTextListName.setText(listBean.getListName());
@@ -74,7 +77,7 @@ public class ReadyListActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.ok_menu, menu);
+        inflater.inflate(R.menu.ready, menu);
         return true;
     }
 
@@ -82,13 +85,48 @@ public class ReadyListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d("test", "" + item.getItemId());
         switch (item.getItemId()) {
+            case R.id.menu:
+                openDialog();
+                break;
             case R.id.menu_check:
-                String date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
+                finish();
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 break;
         }
-        finish();
-        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         return super.onOptionsItemSelected(item);
+    }
+
+    private void openDialog() {
+        View view = getLayoutInflater().inflate(R.layout.ready_list_menu, null);
+        final BottomSheetDialog dialog = new BottomSheetDialog(this);
+        dialog.setContentView(view);
+        TextView listMenuTitle = view.findViewById(R.id.menuTitle);
+        TextView listMenuDraft = view.findViewById(R.id.listMenuDraft);
+        TextView listMenuDelete = view.findViewById(R.id.listMenuDelete);
+        listMenuTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        listMenuDraft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listBean.setUpdatedDate(getCurrentDate());
+                listBean.setListState("draft");
+                listRef.child(listBean.getListId()).setValue(listBean);
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            }
+        });
+        listMenuDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                listRef.child(listBean.getListId()).removeValue();
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            }
+        });
+        dialog.show();
     }
 
     @Override
@@ -116,5 +154,8 @@ public class ReadyListActivity extends AppCompatActivity {
 
             }
         });
+    }
+    private String getCurrentDate() {
+        return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
     }
 }
