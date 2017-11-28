@@ -93,6 +93,10 @@ public class PersonalListActivity extends AppCompatActivity {
         imageButtonAddPredifined.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent intent1=new Intent(getApplicationContext(),PredefinedProductActivity.class);
+                intent1.putExtra("listBean",listBean);
+                finish();
+                startActivity(intent1);
             }
         });
     }
