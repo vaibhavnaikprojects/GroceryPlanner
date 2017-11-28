@@ -39,10 +39,10 @@ public class PersonalListActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private EditText mTextListName;
     DatabaseReference listRef, productsRef;
-    private ImageButton imageButtonMenu,imageButtonAddPredifined;
+    private ImageButton imageButtonMenu, imageButtonAddPredifined;
 
     ListBean listBean;
-    String listId=null;
+    String listId = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,23 +58,24 @@ public class PersonalListActivity extends AppCompatActivity {
         if (listBean == null) {
             setTitle("New List");
             listId = listRef.push().getKey();
+            listBean = new ListBean(listId, "", getCurrentDate(), getCurrentDate(), firebaseAuth.getCurrentUser().getUid(), "Personal", "draft", 0, null, 0);
+            listRef.child(listId).setValue(listBean);
             productsRef = FirebaseDatabase.getInstance().getReference("Products").child(listId);
-        }else {
+        } else {
             setTitle(listBean.getListName());
-            listId=listBean.getListId();
+            listId = listBean.getListId();
             productsRef = FirebaseDatabase.getInstance().getReference("Products").child(listBean.getListId());
         }
-        getSupportActionBar().setIcon(R.drawable.ic_person_white_24dp);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mTextListName = findViewById(R.id.textListName);
-        if(listBean!=null)
+        if (!"".equalsIgnoreCase(listBean.getListName()))
             mTextListName.setText(listBean.getListName());
         recyclerView = findViewById(R.id.listRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         productBeans = new ArrayList<>();
-        imageButtonMenu=findViewById(R.id.imageButtonMenu);
-        imageButtonAddPredifined=findViewById(R.id.imageButtonAddPredifined);
+        imageButtonMenu = findViewById(R.id.imageButtonMenu);
+        imageButtonAddPredifined = findViewById(R.id.imageButtonAddPredifined);
         imageButtonMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,18 +85,18 @@ public class PersonalListActivity extends AppCompatActivity {
         imageButtonAddPredifined.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
             }
         });
     }
+
     private void openDialog() {
         View view = getLayoutInflater().inflate(R.layout.list_menu, null);
         final BottomSheetDialog dialog = new BottomSheetDialog(this);
         dialog.setContentView(view);
         TextView listMenuTitle = view.findViewById(R.id.menuTitle);
         TextView listMenuReady = view.findViewById(R.id.listMenuReady);
-        TextView listMenuShare =view.findViewById(R.id.listMenuShare);
-        TextView listMenuDelete =view.findViewById(R.id.listMenuDelete);
+        TextView listMenuShare = view.findViewById(R.id.listMenuShare);
+        TextView listMenuDelete = view.findViewById(R.id.listMenuDelete);
         listMenuTitle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -105,7 +106,10 @@ public class PersonalListActivity extends AppCompatActivity {
         listMenuReady.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                dialog.dismiss();
+                listBean.setUpdatedDate(getCurrentDate());
+                listBean.setListState("ready");
+                listRef.child(listId).setValue(listBean);
+                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
             }
         });
         listMenuShare.setOnClickListener(new View.OnClickListener() {
@@ -118,10 +122,13 @@ public class PersonalListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 dialog.dismiss();
+                listRef.child(listId).removeValue();
+                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
             }
         });
         dialog.show();
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -134,23 +141,35 @@ public class PersonalListActivity extends AppCompatActivity {
         Log.d("test", "" + item.getItemId());
         switch (item.getItemId()) {
             case R.id.menu_check:
-                if (mTextListName.getText() == null || "".equalsIgnoreCase(String.valueOf(mTextListName.getText())))
+                if (mTextListName.getText() == null || "".equalsIgnoreCase(String.valueOf(mTextListName.getText()))){
                     mTextListName.setError("Please enter list name", getResources().getDrawable(R.drawable.ic_warning_black_24dp));
-                else {
-                    String date = new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
-                    if (listBean == null) {
-                        String id = listRef.push().getKey();
-                        ListBean newList = new ListBean(id, String.valueOf(mTextListName.getText()), date, date, firebaseAuth.getCurrentUser().getUid(), "Personal","draft",0, null, 0);
-                        listRef.child(id).setValue(newList);
-                    } else {
+                    return super.onOptionsItemSelected(item);
+                }else {
+                    if ("".contentEquals(listBean.getListName())) {
+                        listBean.setListName(mTextListName.getText().toString());
+                        listBean.setUpdatedDate(getCurrentDate());
 
+                    } else {
+                        listBean.setUpdatedDate(getCurrentDate());
                     }
+                    listRef.child(listId).setValue(listBean);
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 }
                 break;
+            default:
+                if ("".contentEquals(listBean.getListName())) {
+                    listBean.setListName("New List");
+                    listBean.setUpdatedDate(getCurrentDate());
+                    listRef.child(listId).setValue(listBean);
+                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                }
         }
-        finish();
-        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
         return super.onOptionsItemSelected(item);
+    }
+
+    private String getCurrentDate() {
+        return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
     }
 
     @Override
@@ -161,7 +180,7 @@ public class PersonalListActivity extends AppCompatActivity {
         super.onStart();
     }
 
-    private void productListener(){
+    private void productListener() {
         productsRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
