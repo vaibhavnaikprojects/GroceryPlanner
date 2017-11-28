@@ -17,7 +17,6 @@ package edu.uta.groceryplanner;
 
 import android.content.Context;
 
-import edu.uta.groceryplanner.ui.camera.GraphicOverlay;
 import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.Tracker;
 import com.google.android.gms.vision.barcode.Barcode;

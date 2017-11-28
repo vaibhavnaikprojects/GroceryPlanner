@@ -48,7 +48,8 @@ public class BarcodeActivity extends Activity implements View.OnClickListener {
 
         statusMessage = (TextView)findViewById(R.id.status_message);
         barcodeValue = (TextView)findViewById(R.id.barcode_value);
-
+        Intent readYlistIntent = getIntent();
+        statusMessage.setText("Scan products for List:"+readYlistIntent.getStringExtra("ListName"));
         findViewById(R.id.read_barcode).setOnClickListener(this);
     }
 
