@@ -78,6 +78,6 @@
             android:layout_alignParentEnd="true"
             android:padding="@dimen/activity_horizontal_margin"
             android:background="@color/colorPrimaryDark"
-            app:srcCompat="@drawable/ic_arrow_upward_white_24dp" />
+            app:srcCompat="@drawable/ic_check_black_24dp" />
     </RelativeLayout>
 </android.support.design.widget.CoordinatorLayout>

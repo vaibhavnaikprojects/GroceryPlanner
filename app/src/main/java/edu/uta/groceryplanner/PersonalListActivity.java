@@ -37,7 +37,7 @@ public class PersonalListActivity extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private List<ProductBean> productBeans;
     private FirebaseAuth firebaseAuth;
-    private EditText mTextListName;
+    private EditText mTextListName,addProduct;
     DatabaseReference listRef, productsRef;
     private ImageButton imageButtonMenu, imageButtonAddPredifined;
 
@@ -68,6 +68,7 @@ public class PersonalListActivity extends AppCompatActivity {
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mTextListName = findViewById(R.id.textListName);
+        addProduct=findViewById(R.id.addProduct);
         if (!"".equalsIgnoreCase(listBean.getListName()))
             mTextListName.setText(listBean.getListName());
         recyclerView = findViewById(R.id.listRecyclerView);
@@ -79,7 +80,14 @@ public class PersonalListActivity extends AppCompatActivity {
         imageButtonMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                openDialog();
+                if("".equalsIgnoreCase(addProduct.getText().toString()))
+                    addProduct.setError("Enter Product Name",getResources().getDrawable(R.drawable.ic_warning_black_24dp));
+                else{
+                    String id=productsRef.push().getKey();
+                    ProductBean productBean=new ProductBean(id,addProduct.getText().toString(), "userDefined", "1","uncheck");
+                    productsRef.child(id).setValue(productBean);
+                }
+
             }
         });
         imageButtonAddPredifined.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +140,7 @@ public class PersonalListActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.ok_menu, menu);
+        inflater.inflate(R.menu.ready, menu);
         return true;
     }
 
@@ -140,6 +148,9 @@ public class PersonalListActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         Log.d("test", "" + item.getItemId());
         switch (item.getItemId()) {
+            case R.id.menu:
+                openDialog();
+                break;
             case R.id.menu_check:
                 if (mTextListName.getText() == null || "".equalsIgnoreCase(String.valueOf(mTextListName.getText()))){
                     mTextListName.setError("Please enter list name", getResources().getDrawable(R.drawable.ic_warning_black_24dp));

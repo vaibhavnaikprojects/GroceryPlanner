@@ -5,9 +5,9 @@ package edu.uta.groceryplanner.beans;
  */
 
 public class ProductBean {
-    private int productId;
+    private String productId;
     private String productName;
-    private int productTypeId;
+    private String productTypeId;
     private String productTypeName;
     private String quantity;
     private double rate;
@@ -17,7 +17,7 @@ public class ProductBean {
     public ProductBean(){
 
     }
-    public ProductBean(int productId, String productName, int productTypeId, String quantity,String status) {
+    public ProductBean(String productId, String productName, String productTypeId, String quantity,String status) {
         this.productId = productId;
         this.productName = productName;
         this.productTypeId = productTypeId;
@@ -25,7 +25,7 @@ public class ProductBean {
         this.status=status;
     }
 
-    public ProductBean(int productId, String productName, int productTypeId, String quantity, double rate, double cost,String status) {
+    public ProductBean(String productId, String productName, String productTypeId, String quantity, double rate, double cost,String status) {
         this.productId = productId;
         this.productName = productName;
         this.productTypeId = productTypeId;
@@ -35,11 +35,11 @@ public class ProductBean {
         this.status=status;
     }
 
-    public int getProductId() {
+    public String getProductId() {
         return productId;
     }
 
-    public void setProductId(int productId) {
+    public void setProductId(String productId) {
         this.productId = productId;
     }
 
@@ -51,11 +51,11 @@ public class ProductBean {
         this.productName = productName;
     }
 
-    public int getProductTypeId() {
+    public String getProductTypeId() {
         return productTypeId;
     }
 
-    public void setProductTypeId(int productTypeId) {
+    public void setProductTypeId(String productTypeId) {
         this.productTypeId = productTypeId;
     }
 
