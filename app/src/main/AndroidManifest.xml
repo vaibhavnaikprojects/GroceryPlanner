@@ -29,9 +29,8 @@
         <activity
             android:name=".BarcodeActivity"
             android:label="@string/title_activity_main" />
-        <activity
-            android:name=".BarcodeCaptureActivity"
-            android:label="Read Barcode" />
+        <activity android:name=".BarcodeCaptureActivity"
+            android:label="Read Barcode"/>
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home" />

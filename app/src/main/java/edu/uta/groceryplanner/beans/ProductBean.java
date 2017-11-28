@@ -1,10 +1,11 @@
 package edu.uta.groceryplanner.beans;
 
+import java.io.Serializable;
 /**
  * Created by Vaibhav's Console on 10/30/2017.
  */
 
-public class ProductBean {
+public class ProductBean implements Serializable{
     private String productId;
     private String productName;
     private String productTypeId;
