@@ -29,9 +29,8 @@
         <activity
             android:name=".BarcodeActivity"
             android:label="@string/title_activity_main" />
-        <activity
-            android:name=".BarcodeCaptureActivity"
-            android:label="Read Barcode" />
+        <activity android:name=".BarcodeCaptureActivity"
+            android:label="Read Barcode"/>
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home" />
@@ -58,11 +57,8 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddBillActivity" />
-        <activity android:name=".ReadyListActivity" />
-        <activity android:name=".CompleteListActivity" />
-        <activity android:name=".PredefinedProductActivity" />
-        <activity android:name=".PredefinedItemActivity"></activity>
+        <activity android:name=".AddBillActivity"></activity>
+        <activity android:name=".ReadyListActivity"></activity>
     </application>
 
 </manifest>

@@ -22,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -69,6 +70,7 @@ public class ReadyListActivity extends AppCompatActivity {
                 Log.i("ReadyListActivity","inside listener");
                 Intent barcodeScannerIntent = new Intent(ReadyListActivity.this, BarcodeActivity.class);
                 barcodeScannerIntent.putExtra("ListName",listBean.getListName());
+                barcodeScannerIntent.putExtra("productList", (Serializable) productBeans);
                 startActivity(barcodeScannerIntent);
             }
         });

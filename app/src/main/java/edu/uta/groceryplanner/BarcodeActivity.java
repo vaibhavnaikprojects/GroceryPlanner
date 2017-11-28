@@ -27,6 +27,10 @@ import android.widget.TextView;
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
 
+import java.util.ArrayList;
+
+import edu.uta.groceryplanner.beans.ProductBean;
+
 /**
  * Main activity demonstrating how to pass extra parameters to an activity that
  * reads barcodes.
@@ -99,6 +103,10 @@ public class BarcodeActivity extends Activity implements View.OnClickListener {
                     statusMessage.setText(R.string.barcode_success);
                     barcodeValue.setText(barcode.displayValue);
                     Log.d(TAG, "Barcode read: " + barcode.displayValue);
+                    ArrayList<ProductBean> pList = (ArrayList<ProductBean>) getIntent().getSerializableExtra("productList");
+                    for(int i=0;i<pList.size();i++){
+                        Log.i("product",pList.get(i).getProductName());
+                    }
                 } else {
                     statusMessage.setText(R.string.barcode_failure);
                     Log.d(TAG, "No barcode captured, intent data is null");
