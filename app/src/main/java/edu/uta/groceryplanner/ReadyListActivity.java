@@ -62,7 +62,11 @@ public class ReadyListActivity extends AppCompatActivity {
         mainFab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: @NIKHIL YOUR TASK
+                // from here calls to barcode scanner activity goes.
+                Log.i("ReadyListActivity","inside listener");
+                Intent barcodeScannerIntent = new Intent(ReadyListActivity.this, BarcodeActivity.class);
+                barcodeScannerIntent.putExtra("ListName",listBean.getListName());
+                startActivity(barcodeScannerIntent);
             }
         });
     }

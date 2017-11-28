@@ -42,10 +42,7 @@ import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.api.CommonStatusCodes;
-import edu.uta.groceryplanner.ui.camera.CameraSource;
-import edu.uta.groceryplanner.ui.camera.CameraSourcePreview;
 
-import edu.uta.groceryplanner.ui.camera.GraphicOverlay;
 import com.google.android.gms.vision.MultiProcessor;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
