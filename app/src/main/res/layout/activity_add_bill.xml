@@ -6,108 +6,135 @@
     android:layout_height="match_parent"
     tools:context="edu.uta.groceryplanner.AddBillActivity">
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView1"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <TextView
-            android:id="@+id/textViewLabel"
-            android:layout_width="110dp"
-            android:layout_height="wrap_content"
-            android:text="With you and:"
-            android:textSize="18dp"
-            android:layout_marginLeft="@dimen/text_margin"
-            android:layout_marginTop="@dimen/text_margin"
-            />
-        <AutoCompleteTextView
-            android:id="@+id/autoTextPickName"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/text_margin"
-            android:hint="Pick a friend or group"/>
-    </LinearLayout>
-
-
-    <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-        <View
-            android:layout_width="wrap_content"
-            android:layout_height="0.5dp"
-            android:layout_marginTop="80dp"
-            android:background="#000000"/>
-
-        <EditText
-            android:id="@+id/ediTextDescription"
-            android:hint="Enter a description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/text_margin"
-            android:layout_marginTop="20dp"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_margin="@dimen/text_margin">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-        <ImageView
-            android:id="@+id/imgDollarSign"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="@dimen/text_margin"
-            android:src="@drawable/ic_attach_money_black_24dp"/>
+            android:orientation="horizontal"
+            android:padding="@dimen/activity_horizontal_margin">
 
-        <EditText
-            android:id="@+id/editTextExpense"
-            android:hint="0.00"
-            android:layout_toEndOf="@+id/imgDollarSign"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            <TextView
+                android:id="@+id/textViewLabel"
+                android:layout_width="130dp"
+                android:layout_height="wrap_content"
+                android:text="With you and :"
+                android:textSize="18dp" />
+
+            <MultiAutoCompleteTextView
+                android:id="@+id/autoTextPickName"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/edittextbackground"
+                android:hint="Pick a friend or group"
+                android:padding="@dimen/text_margin" />
         </LinearLayout>
-    </LinearLayout>
+    </android.support.v7.widget.CardView>
 
-    <TextView
-        android:id="@+id/textViewPaidBy"
-        android:text="Paid by "
-        android:textSize="18dp"
-        android:layout_marginLeft="@dimen/text_margin"
-        android:layout_marginTop="200dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <AutoCompleteTextView
-        android:id="@+id/autoTextPaidBy"
-        android:layout_toEndOf="@+id/textViewPaidBy"
-        android:hint="YOU"
-        android:layout_width="wrap_content"
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView2"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="190dp"
-        />
+        android:layout_below="@+id/cardView1"
+        android:layout_margin="@dimen/text_margin">
 
-    <TextView
-        android:id="@+id/textViewSplitLabel"
-        android:text="and split "
-        android:textSize="18dp"
-        android:layout_toEndOf="@+id/autoTextPaidBy"
-        android:layout_marginTop="200dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/activity_horizontal_margin">
 
-    <AutoCompleteTextView
-        android:id="@+id/autoTextSplitBetween"
-        android:hint="EQUALLY"
-        android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imgBillSign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_receipt_black_24dp" />
+
+                <EditText
+                    android:id="@+id/ediTextDescription"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/imgBillSign"
+                    android:hint="Enter a description" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/imgDollarSign"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:src="@drawable/ic_attach_money_black_24dp" />
+
+                <EditText
+                    android:id="@+id/editTextExpense"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/imgDollarSign"
+                    android:hint="0.00" />
+            </LinearLayout>
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardView3"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toEndOf="@+id/textViewSplitLabel"
-        android:layout_marginTop="190dp"
-        />
+        android:layout_below="@+id/cardView2"
+        android:layout_margin="@dimen/text_margin">
 
-    <View
-        android:layout_width="wrap_content"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="250dp"
-        android:background="#000000"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal"
+            android:padding="@dimen/text_margin">
+
+            <TextView
+                android:id="@+id/textViewPaidBy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/text_margin"
+                android:text="Paid by "
+                android:textSize="18dp" />
+
+            <AutoCompleteTextView
+                android:id="@+id/autoTextPaidBy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/textViewPaidBy"
+                android:hint="YOU" />
+
+            <TextView
+                android:id="@+id/textViewSplitLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/autoTextPaidBy"
+                android:text="and split "
+                android:textSize="18dp" />
+
+            <MultiAutoCompleteTextView
+                android:id="@+id/autoTextSplitBetween"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/textViewSplitLabel"
+                android:hint="EQUALLY" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+
 </RelativeLayout>

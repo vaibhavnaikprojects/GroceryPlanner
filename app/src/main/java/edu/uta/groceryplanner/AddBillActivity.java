@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
+import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -32,15 +33,16 @@ import edu.uta.groceryplanner.beans.ListBean;
 
 public class AddBillActivity extends AppCompatActivity {
 
-    private AutoCompleteTextView autoTextPickName;
+    private MultiAutoCompleteTextView autoTextPickName;
     private AutoCompleteTextView autoTextPaidBy;
-    private AutoCompleteTextView autoTextSplitBetween;
+    private MultiAutoCompleteTextView autoTextSplitBetween;
     private DatabaseReference databaseReference;
     List<String> friendsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTitle("Add Bill");
         setContentView(R.layout.activity_add_bill);
         autoTextPickName = findViewById(R.id.autoTextPickName);
         autoTextPaidBy = findViewById(R.id.autoTextPaidBy);
@@ -73,23 +75,25 @@ public class AddBillActivity extends AppCompatActivity {
     }
 
     public void createAutoCompleteView(){
+
         ArrayAdapter<String> searchContactAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, friendsList);
-        AutoCompleteTextView searchContactView = (AutoCompleteTextView)
-                findViewById(R.id.autoTextPickName);
+        MultiAutoCompleteTextView searchContactView = findViewById(R.id.autoTextPickName);
         searchContactView.setAdapter(searchContactAdapter);
+        searchContactView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
 
         ArrayAdapter<String> paidByAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, friendsList);
-        AutoCompleteTextView paidByView = (AutoCompleteTextView)
-                findViewById(R.id.autoTextPaidBy);
+        AutoCompleteTextView paidByView = findViewById(R.id.autoTextPaidBy);
         paidByView.setAdapter(paidByAdapter);
+
 
         ArrayAdapter<String> splitBetweenAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, friendsList);
-        AutoCompleteTextView splitBetweenView = (AutoCompleteTextView)
-                findViewById(R.id.autoTextSplitBetween);
+        MultiAutoCompleteTextView splitBetweenView = findViewById(R.id.autoTextSplitBetween);
         splitBetweenView.setAdapter(splitBetweenAdapter);
+        splitBetweenView.setTokenizer(new MultiAutoCompleteTextView.CommaTokenizer());
+
     }
 
     @Override
