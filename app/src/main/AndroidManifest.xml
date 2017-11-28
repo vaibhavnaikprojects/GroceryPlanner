@@ -57,8 +57,12 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-        <activity android:name=".AddBillActivity"></activity>
-        <activity android:name=".ReadyListActivity"></activity>
+        <activity android:name=".AddBillActivity" />
+        <activity android:name=".ReadyListActivity" />
+        <activity android:name=".CompleteListActivity" />
+        <activity android:name=".PredefinedProductActivity" />
+        <activity android:name=".PredefinedItemActivity" />
+        <activity android:name=".ExpenseSplitterChecklistActivity"></activity>
     </application>
 
 </manifest>
