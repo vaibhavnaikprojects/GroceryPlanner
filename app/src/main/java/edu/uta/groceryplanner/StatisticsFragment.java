@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 import com.github.mikephil.charting.animation.Easing;
@@ -55,8 +56,8 @@ public class StatisticsFragment extends Fragment{
     private static final String ARG_PARAM2 = "param2";
     private Button btnChooseDate;
     private PieChart pieChart;
-    private Button btnNext;
-    private Button btnPrevious;
+    private ImageButton btnNext;
+    private ImageButton btnPrevious;
     private TextView textViewMonthYear;
     private DateTime date;
     private FirebaseAuth firebaseAuth;

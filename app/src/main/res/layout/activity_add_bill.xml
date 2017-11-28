@@ -28,6 +28,7 @@
             android:hint="Pick a friend or group"/>
     </LinearLayout>
 
+
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
@@ -47,13 +48,25 @@
             android:layout_marginLeft="@dimen/text_margin"
             android:layout_marginTop="20dp"/>
 
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/imgDollarSign"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="@dimen/text_margin"
+            android:src="@drawable/ic_attach_money_black_24dp"/>
+
         <EditText
             android:id="@+id/editTextExpense"
             android:hint="0.00"
-            android:layout_marginLeft="@dimen/text_margin"
+            android:layout_toEndOf="@+id/imgDollarSign"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-
+        </LinearLayout>
     </LinearLayout>
 
     <TextView
@@ -91,4 +104,10 @@
         android:layout_toEndOf="@+id/textViewSplitLabel"
         android:layout_marginTop="190dp"
         />
+
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="0.5dp"
+        android:layout_marginTop="250dp"
+        android:background="#000000"/>
 </RelativeLayout>
