@@ -26,10 +26,21 @@ import android.widget.TextView;
 
 import com.google.android.gms.common.api.CommonStatusCodes;
 import com.google.android.gms.vision.barcode.Barcode;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+import edu.uta.groceryplanner.beans.ListBean;
 import edu.uta.groceryplanner.beans.ProductBean;
+import edu.uta.groceryplanner.walmart.ManageProduct;
 
 /**
  * Main activity demonstrating how to pass extra parameters to an activity that
@@ -42,9 +53,13 @@ public class BarcodeActivity extends Activity implements View.OnClickListener {
     private CompoundButton useFlash;
     private TextView statusMessage;
     private TextView barcodeValue;
-
+    private DatabaseReference mbase;
     private static final int RC_BARCODE_CAPTURE = 9001;
     private static final String TAG = "BarcodeActivity";
+    private static ListBean list;
+    private static List<ProductBean> productList;
+    private static Barcode barcode;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,8 +67,10 @@ public class BarcodeActivity extends Activity implements View.OnClickListener {
 
         statusMessage = (TextView)findViewById(R.id.status_message);
         barcodeValue = (TextView)findViewById(R.id.barcode_value);
-        Intent readYlistIntent = getIntent();
-        statusMessage.setText("Scan products for List:"+readYlistIntent.getStringExtra("ListName"));
+        Intent readyListIntent = getIntent();
+        list = (ListBean) readyListIntent.getSerializableExtra("listBean");
+        productList = (List<ProductBean>) readyListIntent.getSerializableExtra("productList");
+        statusMessage.setText("Scan products for List:"+list.getListName());
         findViewById(R.id.read_barcode).setOnClickListener(this);
     }
 
@@ -99,14 +116,42 @@ public class BarcodeActivity extends Activity implements View.OnClickListener {
         if (requestCode == RC_BARCODE_CAPTURE) {
             if (resultCode == CommonStatusCodes.SUCCESS) {
                 if (data != null) {
-                    Barcode barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
+                    barcode = data.getParcelableExtra(BarcodeCaptureActivity.BarcodeObject);
                     statusMessage.setText(R.string.barcode_success);
                     barcodeValue.setText(barcode.displayValue);
                     Log.d(TAG, "Barcode read: " + barcode.displayValue);
-                    ArrayList<ProductBean> pList = (ArrayList<ProductBean>) getIntent().getSerializableExtra("productList");
-                    for(int i=0;i<pList.size();i++){
-                        Log.i("product",pList.get(i).getProductName());
-                    }
+                    mbase = FirebaseDatabase.getInstance().getReference("Products");
+                        //Log.d("product",productList.get(i).getProductName());
+                        mbase.child(list.getListId()).addListenerForSingleValueEvent(new ValueEventListener() {
+
+                            @Override
+                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                ProductBean product = new ProductBean();
+                                try {
+                                    product = ManageProduct.getProduct(Integer.parseInt(barcode.displayValue));
+                                }catch(Exception e){
+                                    Log.d("Exception:",barcode.displayValue);
+                                    Log.d("Error:",e.getMessage());
+                                }
+                                for(DataSnapshot d : dataSnapshot.getChildren()) {
+                                    if ("uncheck".equalsIgnoreCase(d.child("status").getValue().toString()) && product.getProductName().equalsIgnoreCase(d.child("productName").getValue().toString())){
+                                        Map<String ,Object> m = new HashMap<String,Object>();
+                                        m.put("status","check");
+                                        m.put("cost",(product.getCost()*Double.parseDouble((String) d.child("quantity").getValue())));
+                                        mbase.child(list.getListId()).child(d.getKey().toString()).updateChildren(m);
+                                        break;
+                                    }
+                                }
+                                Intent backtoReadyList = new Intent();
+                                setResult(Activity.RESULT_OK,backtoReadyList);
+                                finish();
+                            }
+
+                            @Override
+                            public void onCancelled(DatabaseError databaseError) {
+
+                            }
+                        });
                 } else {
                     statusMessage.setText(R.string.barcode_failure);
                     Log.d(TAG, "No barcode captured, intent data is null");
