@@ -46,8 +46,8 @@ public class ManageProduct {
 		JSONObject obj = (JSONObject)parser.parse(data);
 		
 		p.setProductTypeId((String)obj.get("categoryNode"));
-		p.setProductId((String)obj.get("itemId"));
-		p.setProductName((String)obj.get("name"));
+		//p.setProductId((String)obj.get("itemId"));
+		//p.setProductName((String)obj.get("name"));
 		p.setCost((Double)obj.get("salePrice"));
 		
 		return p;

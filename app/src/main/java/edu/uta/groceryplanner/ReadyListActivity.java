@@ -29,6 +29,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import edu.uta.groceryplanner.adapters.ProductAdapter;
+import edu.uta.groceryplanner.adapters.ReadyChecklistAdapter;
 import edu.uta.groceryplanner.beans.ListBean;
 import edu.uta.groceryplanner.beans.ProductBean;
 
@@ -69,11 +70,16 @@ public class ReadyListActivity extends AppCompatActivity {
                 // from here calls to barcode scanner activity goes.
                 Log.i("ReadyListActivity","inside listener");
                 Intent barcodeScannerIntent = new Intent(ReadyListActivity.this, BarcodeActivity.class);
-                barcodeScannerIntent.putExtra("ListName",listBean.getListName());
+                barcodeScannerIntent.putExtra("listBean",(Serializable) listBean);
                 barcodeScannerIntent.putExtra("productList", (Serializable) productBeans);
-                startActivity(barcodeScannerIntent);
+                startActivityForResult(barcodeScannerIntent,1);
             }
         });
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
     }
 
     @Override
@@ -146,7 +152,7 @@ public class ReadyListActivity extends AppCompatActivity {
                     ProductBean productBean = dataSnap.getValue(ProductBean.class);
                     productBeans.add(productBean);
                 }
-                adapter = new ProductAdapter(productBeans, getApplicationContext());
+                adapter = new ReadyChecklistAdapter(productBeans, getApplicationContext());
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(adapter);
             }
