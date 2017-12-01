@@ -148,12 +148,24 @@ public class BarcodeActivity extends Activity implements View.OnClickListener {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
                                 for(DataSnapshot d : dataSnapshot.getChildren()) {
-                                    if ("uncheck".equalsIgnoreCase(d.child("status").getValue().toString()) && product.getProductName().contains(d.child("productName").getValue().toString())){
-                                        Map<String ,Object> m = new HashMap<String,Object>();
-                                        m.put("status","check");
-                                        m.put("cost",(product.getCost()*Double.parseDouble((String) d.child("quantity").getValue())));
-                                        mbase.child(list.getListId()).child(d.getKey().toString()).updateChildren(m);
-                                        break;
+                                    if ("uncheck".equalsIgnoreCase(d.child("status").getValue().toString())){
+                                        String pname = d.child("productName").getValue().toString();
+                                        String[] pwords = pname.split(" ");
+                                        int flag=0;
+                                        for(String s:pwords){
+                                            if(!product.getProductName().toLowerCase().contains(s.toLowerCase())){
+                                                flag=1;
+                                                break;
+                                            }
+                                        }
+                                        if(flag==0) {
+                                            Map<String, Object> m = new HashMap<String, Object>();
+                                            m.put("status", "check");
+                                            m.put("cost", (product.getCost() * Double.parseDouble((String) d.child("quantity").getValue())));
+                                            m.put("rate", product.getCost());
+                                            mbase.child(list.getListId()).child(d.getKey().toString()).updateChildren(m);
+                                            break;
+                                        }
                                     }
                                 }
                             }
