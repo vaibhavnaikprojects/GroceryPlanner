@@ -1,5 +1,7 @@
 package edu.uta.groceryplanner;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
@@ -12,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -26,7 +29,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import edu.uta.groceryplanner.adapters.ProductAdapter;
 import edu.uta.groceryplanner.beans.ListBean;
@@ -35,9 +37,9 @@ import edu.uta.groceryplanner.beans.ProductBean;
 public class PersonalListActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-    private List<ProductBean> productBeans;
+    private ArrayList<ProductBean> productBeans;
     private FirebaseAuth firebaseAuth;
-    private EditText mTextListName,addProduct;
+    private EditText mTextListName, addProduct;
     DatabaseReference listRef, productsRef;
     private ImageButton imageButtonMenu, imageButtonAddPredifined;
 
@@ -68,7 +70,7 @@ public class PersonalListActivity extends AppCompatActivity {
         }
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mTextListName = findViewById(R.id.textListName);
-        addProduct=findViewById(R.id.addProduct);
+        addProduct = findViewById(R.id.addProduct);
         if (!"".equalsIgnoreCase(listBean.getListName()))
             mTextListName.setText(listBean.getListName());
         recyclerView = findViewById(R.id.listRecyclerView);
@@ -80,12 +82,13 @@ public class PersonalListActivity extends AppCompatActivity {
         imageButtonMenu.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if("".equalsIgnoreCase(addProduct.getText().toString()))
-                    addProduct.setError("Enter Product Name",getResources().getDrawable(R.drawable.ic_warning_black_24dp));
-                else{
-                    String id=productsRef.push().getKey();
-                    ProductBean productBean=new ProductBean(id,addProduct.getText().toString(), "userDefined", "1","uncheck");
+                if ("".equalsIgnoreCase(addProduct.getText().toString()))
+                    addProduct.setError("Enter Product Name", getResources().getDrawable(R.drawable.ic_warning_black_24dp));
+                else {
+                    String id = productsRef.push().getKey();
+                    ProductBean productBean = new ProductBean(id, addProduct.getText().toString(), "userDefined", "1", "uncheck");
                     productsRef.child(id).setValue(productBean);
+                    addProduct.setText("");
                 }
 
             }
@@ -93,9 +96,9 @@ public class PersonalListActivity extends AppCompatActivity {
         imageButtonAddPredifined.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent1=new Intent(getApplicationContext(),PredefinedProductActivity.class);
-                intent1.putExtra("listBean",listBean);
-                finish();
+                Intent intent1 = new Intent(getApplicationContext(), PredefinedProductActivity.class);
+                intent1.putExtra("listBean", listBean);
+                intent1.putExtra("productBeans", productBeans);
                 startActivity(intent1);
             }
         });
@@ -121,7 +124,7 @@ public class PersonalListActivity extends AppCompatActivity {
                 listBean.setUpdatedDate(getCurrentDate());
                 listBean.setListState("ready");
                 listRef.child(listId).setValue(listBean);
-                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
             }
         });
         listMenuShare.setOnClickListener(new View.OnClickListener() {
@@ -135,7 +138,7 @@ public class PersonalListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 dialog.dismiss();
                 listRef.child(listId).removeValue();
-                startActivity(new Intent(getApplicationContext(),HomeActivity.class));
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
             }
         });
         dialog.show();
@@ -156,10 +159,10 @@ public class PersonalListActivity extends AppCompatActivity {
                 openDialog();
                 break;
             case R.id.menu_check:
-                if (mTextListName.getText() == null || "".equalsIgnoreCase(String.valueOf(mTextListName.getText()))){
+                if (mTextListName.getText() == null || "".equalsIgnoreCase(String.valueOf(mTextListName.getText()))) {
                     mTextListName.setError("Please enter list name", getResources().getDrawable(R.drawable.ic_warning_black_24dp));
                     return super.onOptionsItemSelected(item);
-                }else {
+                } else {
                     if ("".contentEquals(listBean.getListName())) {
                         listBean.setListName(mTextListName.getText().toString());
                         listBean.setUpdatedDate(getCurrentDate());
@@ -169,7 +172,6 @@ public class PersonalListActivity extends AppCompatActivity {
                     }
                     listRef.child(listId).setValue(listBean);
                     finish();
-                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 }
                 break;
             default:
@@ -177,8 +179,9 @@ public class PersonalListActivity extends AppCompatActivity {
                     listBean.setListName("New List");
                     listBean.setUpdatedDate(getCurrentDate());
                     listRef.child(listId).setValue(listBean);
-                    startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 }
+                finish();
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -204,7 +207,7 @@ public class PersonalListActivity extends AppCompatActivity {
                     ProductBean productBean = dataSnap.getValue(ProductBean.class);
                     productBeans.add(productBean);
                 }
-                adapter = new ProductAdapter(productBeans, getApplicationContext());
+                adapter = new ProductAdapter(productBeans, getApplicationContext(),onItemClickListener);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(adapter);
             }
@@ -216,21 +219,51 @@ public class PersonalListActivity extends AppCompatActivity {
         });
     }
 
-    /*PersonalListActivity.OnItemClickListener onItemClickListener=new PersonalListActivity.OnItemClickListener() {
+    ProductAdapter.OnItemClickListener onItemClickListener = new ProductAdapter.OnItemClickListener() {
         @Override
         public void onItemClick(View view, int position) {
-            ListBean listBean=beanList.get(position);
-            if("personal".equalsIgnoreCase(listBean.getListType())) {
-                Intent intent = new Intent(getContext(), PersonalListActivity.class);
-                intent.putExtra("list", listBean);
-                startActivity(intent);
-            }
-            else{
-                Intent intent = new Intent(getContext(), GroupListActivity.class);
-                intent.putExtra("list", listBean);
-                startActivity(intent);
-            }
+            final ProductBean productBean = productBeans.get(position);
+            View modal = getLayoutInflater().inflate(R.layout.product_modal, null);
+            final TextView title=modal.findViewById(R.id.textView2);
+            final EditText quantity=modal.findViewById(R.id.quantity);
+            quantity.setText(productBean.getQuantity());
+            AlertDialog dialog = new AlertDialog.Builder(PersonalListActivity.this)
+                    .setView(modal)
+                    .setCancelable(false)
+                    .setPositiveButton("Add", null)
+                    .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    })
+                    .setNegativeButton("Delete",
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int id) {
+                                    productsRef.child(productBean.getProductId()).removeValue();
+                                }
+                            }).create();
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(final DialogInterface dialog) {
+                    Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                    title.setText(productBean.getProductName());
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(quantity.getText().toString().equalsIgnoreCase(""))
+                                quantity.setError("Enter Rate");
+                            else{
+                                productBean.setQuantity(quantity.getText().toString());
+                                productsRef.child(productBean.getProductId()).setValue(productBean);
+                            }
+                            dialog.dismiss();
+                        }
+                    });
+                }
+            });
+            dialog.show();
         }
-    };*/
+    };
 }
 

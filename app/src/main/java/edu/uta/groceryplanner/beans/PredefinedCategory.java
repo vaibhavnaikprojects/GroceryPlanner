@@ -10,8 +10,6 @@ public class PredefinedCategory implements Serializable{
     private String categoryId;
     private String categoryName;
 
-    public PredefinedCategory(){
-    }
     public PredefinedCategory(String categoryId, String categoryName) {
         this.categoryId = categoryId;
         this.categoryName = categoryName;

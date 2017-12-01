@@ -130,7 +130,7 @@ public class CompleteListActivity extends AppCompatActivity {
                     ProductBean productBean = dataSnap.getValue(ProductBean.class);
                     productBeans.add(productBean);
                 }
-                adapter = new ProductAdapter(productBeans, getApplicationContext());
+                adapter = new ProductAdapter(productBeans, getApplicationContext(),null);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(adapter);
             }

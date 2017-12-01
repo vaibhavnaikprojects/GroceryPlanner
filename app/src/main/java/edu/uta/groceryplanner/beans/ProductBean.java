@@ -18,6 +18,10 @@ public class ProductBean implements Serializable{
     public ProductBean(){
 
     }
+
+    public ProductBean( String productName){
+        this.productName=productName;
+    }
     public ProductBean(String productId, String productName, String productTypeId, String quantity,String status) {
         this.productId = productId;
         this.productName = productName;
@@ -34,6 +38,21 @@ public class ProductBean implements Serializable{
         this.rate = rate;
         this.cost = cost;
         this.status=status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ProductBean that = (ProductBean) o;
+
+        return productName != null ? productName.equals(that.productName) : that.productName == null;
+    }
+
+    @Override
+    public int hashCode() {
+        return productName != null ? productName.hashCode() : 0;
     }
 
     public String getProductId() {

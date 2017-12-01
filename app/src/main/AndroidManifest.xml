@@ -29,8 +29,9 @@
         <activity
             android:name=".BarcodeActivity"
             android:label="@string/title_activity_main" />
-        <activity android:name=".BarcodeCaptureActivity"
-            android:label="Read Barcode"/>
+        <activity
+            android:name=".BarcodeCaptureActivity"
+            android:label="Read Barcode" />
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home" />
@@ -61,8 +62,8 @@
         <activity android:name=".ReadyListActivity" />
         <activity android:name=".CompleteListActivity" />
         <activity android:name=".PredefinedProductActivity" />
-        <activity android:name=".PredefinedItemActivity" />
-        <activity android:name=".ExpenseSplitterChecklistActivity"></activity>
+        <activity android:name=".ExpenseSplitterChecklistActivity" />
+        <activity android:name=".GroupActivity"></activity>
     </application>
 
 </manifest>

@@ -1,7 +1,5 @@
 package edu.uta.groceryplanner.beans;
 
-import java.util.List;
-
 /**
  * Created by Vaibhav's Console on 11/27/2017.
  */
@@ -9,9 +7,15 @@ import java.util.List;
 public class GroupBean {
     private String groupId;
     private String groupName;
-    private List<UserBean> userBeans;
-    private String createdDate;
-    private String createdUser;
+
+    public GroupBean() {
+    }
+
+    public GroupBean(String groupId, String groupName) {
+        this.groupId = groupId;
+        this.groupName = groupName;
+    }
+
     public String getGroupId() {
         return groupId;
     }
@@ -28,11 +32,4 @@ public class GroupBean {
         this.groupName = groupName;
     }
 
-    public List<UserBean> getUserBeans() {
-        return userBeans;
-    }
-
-    public void setUserBeans(List<UserBean> userBeans) {
-        this.userBeans = userBeans;
-    }
 }

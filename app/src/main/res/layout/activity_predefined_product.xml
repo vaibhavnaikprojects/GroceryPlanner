@@ -3,15 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/activity_predefined_product_layout"
     tools:context="edu.uta.groceryplanner.PredefinedProductActivity">
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/predefinedCategoryRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clickable="true"
-        android:focusable="true"
-        android:background="?android:attr/selectableItemBackground"
-        >
+        android:layout_height="match_parent">
     </android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>
