@@ -23,14 +23,16 @@ public class ProductBean implements Serializable{
         this.productName=productName;
     }
     public ProductBean(String productId, String productName, String productTypeId, String quantity,String status) {
+
         this.productId = productId;
         this.productName = productName;
         this.productTypeId = productTypeId;
+        this.productTypeName = productTypeName;
         this.quantity = quantity;
         this.status=status;
     }
 
-    public ProductBean(String productId, String productName, String productTypeId, String quantity, double rate, double cost,String status) {
+    public ProductBean(String productId, String productName, String productTypeId,String quantity, double rate, double cost,String status) {
         this.productId = productId;
         this.productName = productName;
         this.productTypeId = productTypeId;

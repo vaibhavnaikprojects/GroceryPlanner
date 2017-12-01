@@ -110,6 +110,7 @@ public class ReadyListActivity extends AppCompatActivity {
         dialog.setContentView(view);
         TextView listMenuTitle = view.findViewById(R.id.menuTitle);
         TextView listMenuDraft = view.findViewById(R.id.listMenuDraft);
+        TextView listMenuDone = view.findViewById(R.id.listMenuDone);
         TextView listMenuDelete = view.findViewById(R.id.listMenuDelete);
         listMenuTitle.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,6 +123,24 @@ public class ReadyListActivity extends AppCompatActivity {
             public void onClick(View view) {
                 listBean.setUpdatedDate(getCurrentDate());
                 listBean.setListState("draft");
+                listRef.child(listBean.getListId()).setValue(listBean);
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            }
+        });
+        listMenuDraft.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listBean.setUpdatedDate(getCurrentDate());
+                listBean.setListState("draft");
+                listRef.child(listBean.getListId()).setValue(listBean);
+                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+            }
+        });
+        listMenuDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listBean.setUpdatedDate(getCurrentDate());
+                listBean.setListState("complete");
                 listRef.child(listBean.getListId()).setValue(listBean);
                 startActivity(new Intent(getApplicationContext(), HomeActivity.class));
             }
