@@ -84,8 +84,13 @@ public class CompletedFragment extends Fragment {
         @Override
         public void onItemClick(View view, int position) {
             ListBean listBean=beanList.get(position);
-            if("personal".equalsIgnoreCase(listBean.getListType())) {
+            if(!"personal".equalsIgnoreCase(listBean.getListType())) {
                 Intent intent = new Intent(getContext(), CompleteListActivity.class);
+                intent.putExtra("list", listBean);
+                startActivity(intent);
+            }
+            else{
+                Intent intent = new Intent(getContext(), ExpenseSplitterChecklistActivity.class);
                 intent.putExtra("list", listBean);
                 startActivity(intent);
             }
