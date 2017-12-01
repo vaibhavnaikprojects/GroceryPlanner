@@ -7,12 +7,12 @@ package edu.uta.groceryplanner.beans;
 public class StatisticsBean {
 
     private String productName;
-    private int cost;
-    private int percentage;
+    private double cost;
+    private double percentage;
 
     public StatisticsBean(){}
 
-    public StatisticsBean(String productName, int cost, int percentage) {
+    public StatisticsBean(String productName, double cost, double percentage) {
         this.productName = productName;
         this.cost = cost;
         this.percentage = percentage;
@@ -26,19 +26,19 @@ public class StatisticsBean {
         this.productName = productName;
     }
 
-    public int getCost() {
+    public Double getCost() {
         return cost;
     }
 
-    public void setCost(int cost) {
+    public void setCost(Double cost) {
         this.cost = cost;
     }
 
-    public int getPercentage() {
+    public double getPercentage() {
         return percentage;
     }
 
-    public void setPercentage(int percentage) {
+    public void setPercentage(double percentage) {
         this.percentage = percentage;
     }
 }

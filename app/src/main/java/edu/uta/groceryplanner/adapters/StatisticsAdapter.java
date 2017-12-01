@@ -38,8 +38,8 @@ public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.Vi
     public void onBindViewHolder(ViewHolder holder, final int position) {
         StatisticsBean statisticsBean = statisticsBeanList.get(position);
         holder.textViewProductName.setText(statisticsBean.getProductName());
-        holder.textViewCost.setText(Integer.toString(statisticsBean.getCost())+"$");
-        holder.textViewPercentage.setText(Integer.toString(statisticsBean.getPercentage())+"%");
+        holder.textViewCost.setText(statisticsBean.getCost()+"$");
+        holder.textViewPercentage.setText(statisticsBean.getPercentage()+"%");
     }
     @Override
     public int getItemCount() {

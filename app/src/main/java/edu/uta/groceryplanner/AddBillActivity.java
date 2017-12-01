@@ -15,6 +15,7 @@ import android.widget.EditText;
 import android.widget.MultiAutoCompleteTextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -36,8 +37,11 @@ public class AddBillActivity extends AppCompatActivity {
     private MultiAutoCompleteTextView autoTextPickName;
     private AutoCompleteTextView autoTextPaidBy;
     private MultiAutoCompleteTextView autoTextSplitBetween;
+    private EditText editTextDescription;
+    private EditText editTextExpense;
     private DatabaseReference databaseReference;
-    List<String> friendsList;
+    private FirebaseAuth firebaseAuth;
+    private List<String> friendsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,34 +51,65 @@ public class AddBillActivity extends AppCompatActivity {
         autoTextPickName = findViewById(R.id.autoTextPickName);
         autoTextPaidBy = findViewById(R.id.autoTextPaidBy);
         autoTextSplitBetween = findViewById(R.id.autoTextSplitBetween);
-        databaseReference = FirebaseDatabase.getInstance().getReference().child("friends");
+        editTextDescription = findViewById(R.id.editTextDescription);
+        editTextExpense = findViewById(R.id.editTextExpense);
+        firebaseAuth = FirebaseAuth.getInstance();
         friendsList = new ArrayList<String>();
+        databaseReference = FirebaseDatabase.getInstance().getReference("friends").child(firebaseAuth.getCurrentUser().getUid());
+
         fetchAllFriends();
         createAutoCompleteView();
-
     }
 
-    public void fetchAllFriends(){
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+    public void addExpenseToFriends(){
 
+        final String[] friendNameList = autoTextPickName.getText().toString().split(",");
+        String description = editTextDescription.getText().toString();
+        final double expense = Double.valueOf(editTextExpense.getText().toString());
+
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                for(DataSnapshot dataSnap: dataSnapshot.getChildren()){
-                    for(DataSnapshot dataSnap1: dataSnap.getChildren()){
-                        FriendsBean friendsBean = dataSnap1.getValue(FriendsBean.class);
-                        friendsList.add(friendsBean.getFriendName());
+                for(DataSnapshot snap: dataSnapshot.getChildren()){
+                    FriendsBean friendsBean = snap.getValue(FriendsBean.class);
+                    for(String friendName: friendNameList) {
+                        if (friendsBean.getFriendName().equals(friendName.trim())) {
+                            double number = friendNameList.length;
+                            friendsBean.setOwePrice(friendsBean.getOwePrice() + (expense/number));
+                            friendsBean.setOweStatus("Owes You");
+                            databaseReference.child(friendsBean.getFriendId()).setValue(friendsBean);
+                        }
                     }
                 }
             }
 
             @Override
             public void onCancelled(DatabaseError databaseError) {
-                Log.e("ERROR","Exception while fetching all friends :"+databaseError.getMessage());
+
             }
         });
     }
 
-    public void createAutoCompleteView(){
+
+    public void fetchAllFriends() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot dataSnap : dataSnapshot.getChildren()) {
+                    FriendsBean friendsBean = dataSnap.getValue(FriendsBean.class);
+                    friendsList.add(friendsBean.getFriendName());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                Log.e("ERROR", "Exception while fetching all friends :" + databaseError.getMessage());
+            }
+        });
+    }
+
+    public void createAutoCompleteView() {
 
         ArrayAdapter<String> searchContactAdapter = new ArrayAdapter<String>(this,
                 android.R.layout.simple_dropdown_item_1line, friendsList);
@@ -105,6 +140,7 @@ public class AddBillActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+        addExpenseToFriends();
         Toast.makeText(this, "Saved Bill", Toast.LENGTH_SHORT).show();
         finish();
         return true;
