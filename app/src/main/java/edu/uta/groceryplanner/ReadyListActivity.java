@@ -78,7 +78,7 @@ public class ReadyListActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+        Log.d("came abck to ready list","here in ready list from barcode activity");
     }
 
     @Override

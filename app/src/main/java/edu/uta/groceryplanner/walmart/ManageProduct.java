@@ -1,5 +1,5 @@
 package edu.uta.groceryplanner.walmart;
-
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
@@ -14,10 +14,11 @@ import edu.uta.groceryplanner.beans.ProductBean;
 
 public class ManageProduct {
 	static String data;
-	private static void fetchJSONData(int productId) {
+	private static void fetchJSONData(String productId) {
 		try {
-			String restURL = "http://api.walmartlabs.com/v1/items/"+String.valueOf(productId)+"?&format=json&apiKey=mbqtt78en6jgfpzmuyj6ab5s";
-			URL walmartUrl = new URL(restURL); 
+			String restURL = "http://api.walmartlabs.com/v1/search?query="+productId+"&format=json&apiKey=mbqtt78en6jgfpzmuyj6ab5s";
+			System.out.println(restURL);
+			URL walmartUrl = new URL(restURL);
 			HttpURLConnection con = (HttpURLConnection)walmartUrl.openConnection();
 			con.setRequestMethod("GET");
 			con.setRequestProperty("Accept", "application/json");
@@ -38,18 +39,23 @@ public class ManageProduct {
 			System.out.println(e.getMessage());
 		}
 	}
-	
-	public static ProductBean getProduct(int productId) throws ParseException {
+
+	public static ProductBean getProduct(String productId) throws ParseException {
 		fetchJSONData(productId);
 		ProductBean p = new ProductBean();
 		JSONParser parser = new JSONParser();
-		JSONObject obj = (JSONObject)parser.parse(data);
-		
+		Object object = parser.parse(data);
+		JSONObject jsonObject = (JSONObject)object;
+
+		JSONArray arr = (JSONArray)jsonObject.get("items");
+		Object object1 = (Object)arr.get(0);
+		JSONObject obj = (JSONObject)object1;
 		p.setProductTypeId((String)obj.get("categoryNode"));
-		//p.setProductId((String)obj.get("itemId"));
-		//p.setProductName((String)obj.get("name"));
+		p.setProductId(String.valueOf(obj.get("itemId")));
+		p.setProductName((String)obj.get("name"));
 		p.setCost((Double)obj.get("salePrice"));
-		
+		p.setProductTypeName((String)obj.get("categoryPath"));
+
 		return p;
 	}
 }
