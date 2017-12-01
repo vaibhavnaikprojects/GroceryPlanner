@@ -16,11 +16,8 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +34,7 @@ public class GroupActivity extends AppCompatActivity {
     private ImageButton addGroupBtn;
     private GroupBean groupBean;
     private String groupId;
-    private DatabaseReference groupRef,groupUsersRef;
+    private DatabaseReference groupRef,groupUsersRef,friendsRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +45,7 @@ public class GroupActivity extends AppCompatActivity {
         }
         Intent intent = getIntent();
         groupBean = (GroupBean) intent.getSerializableExtra("group");
+        groupRef=FirebaseDatabase.getInstance().getReference("Groups");
         if(groupBean==null) {
             setTitle("New Group");
             groupId= groupRef.push().getKey();
@@ -57,8 +55,8 @@ public class GroupActivity extends AppCompatActivity {
             groupId = groupBean.getGroupId();
             setTitle(groupBean.getGroupName());
         }
-        groupRef= FirebaseDatabase.getInstance().getReference("Groups");
         groupUsersRef=FirebaseDatabase.getInstance().getReference("GroupUsers").child(groupId);
+        friendsRef=FirebaseDatabase.getInstance().getReference("friends").child(firebaseAuth.getCurrentUser().getUid());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         mTextGroupName=findViewById(R.id.textGroupName);
         addGroupBtn=findViewById(R.id.addGroupBtn);
@@ -93,8 +91,10 @@ public class GroupActivity extends AppCompatActivity {
                 openDialog();
                 break;
             case R.id.menu_check:
+                finish();
                 break;
             default:
+                finish();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -112,17 +112,30 @@ public class GroupActivity extends AppCompatActivity {
 
     @Override
     public void onStart() {
-        groupUsersRef.addValueEventListener(new ValueEventListener() {
+        /*groupUsersRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 friendsBeans.clear();
-            }
+                for(DataSnapshot data : dataSnapshot.getChildren()){
+                    friendsRef.child(data.getKey()).addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot snap) {
+                             FriendsBean friendsBean=snap.getValue(FriendsBean.class);
+                             friendsBeans.add(friendsBean);
+                        }
 
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-        super.onStart();
+        super.onStart();*/
     }
 }

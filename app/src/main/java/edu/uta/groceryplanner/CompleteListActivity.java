@@ -7,7 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -69,15 +68,15 @@ public class CompleteListActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("test", "" + item.getItemId());
         switch (item.getItemId()) {
             case R.id.menu:
                 openDialog();
                 break;
             case R.id.menu_check:
                 finish();
-                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 break;
+            default:
+                finish();
         }
         return super.onOptionsItemSelected(item);
     }

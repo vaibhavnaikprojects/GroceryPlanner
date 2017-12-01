@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import edu.uta.groceryplanner.adapters.ProductAdapter;
 import edu.uta.groceryplanner.adapters.ReadyChecklistAdapter;
 import edu.uta.groceryplanner.beans.ListBean;
 import edu.uta.groceryplanner.beans.ProductBean;
@@ -98,8 +97,9 @@ public class ReadyListActivity extends AppCompatActivity {
                 break;
             case R.id.menu_check:
                 finish();
-                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                 break;
+            default:
+                finish();
         }
         return super.onOptionsItemSelected(item);
     }
