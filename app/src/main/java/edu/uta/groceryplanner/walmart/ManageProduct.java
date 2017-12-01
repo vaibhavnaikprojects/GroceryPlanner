@@ -55,7 +55,6 @@ public class ManageProduct {
 		p.setProductName((String)obj.get("name"));
 		p.setCost((Double)obj.get("salePrice"));
 		p.setProductTypeName((String)obj.get("categoryPath"));
-
 		return p;
 	}
 }
