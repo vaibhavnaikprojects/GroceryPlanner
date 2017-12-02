@@ -90,7 +90,6 @@ public class BarcodeActivity extends Activity implements View.OnClickListener {
             Intent intent = new Intent(this, BarcodeCaptureActivity.class);
             startActivityForResult(intent, RC_BARCODE_CAPTURE);
         }
-
     }
 
     /**
@@ -175,9 +174,6 @@ public class BarcodeActivity extends Activity implements View.OnClickListener {
 
                             }
                         });
-                    Intent backtoReadyList = new Intent();
-                    setResult(Activity.RESULT_OK,backtoReadyList);
-                    finish();
                 } else {
                     statusMessage.setText(R.string.barcode_failure);
                     Log.d(TAG, "No barcode captured, intent data is null");
@@ -190,5 +186,8 @@ public class BarcodeActivity extends Activity implements View.OnClickListener {
         else {
             super.onActivityResult(requestCode, resultCode, data);
         }
+        Intent backtoReadyList = new Intent();
+        setResult(Activity.RESULT_OK,backtoReadyList);
+        finish();
     }
 }
