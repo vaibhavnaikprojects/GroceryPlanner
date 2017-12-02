@@ -17,6 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -54,7 +55,7 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         if (firebaseAuth == null) {
             startActivity(new Intent(getContext(), LoginActivity.class));
         }
-        groupsRef = FirebaseDatabase.getInstance().getReference("groups").child(firebaseAuth.getCurrentUser().getUid());
+        groupsRef = FirebaseDatabase.getInstance().getReference("Groups");
         groupUsersRef = FirebaseDatabase.getInstance().getReference("GroupUsers");
     }
 
@@ -66,6 +67,9 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         groupListBeans = new ArrayList<>();
+        adapter = new GroupAdapter(groupListBeans, getContext(), firebaseAuth, onItemClickListener);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
         mainFab = view.findViewById(R.id.mainFab);
         groupFab = view.findViewById(R.id.groupFab);
         billFab = view.findViewById(R.id.billFab);
@@ -116,28 +120,40 @@ public class GroupFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onStart() {
-        groupUsersRef.orderByChild(firebaseAuth.getCurrentUser().getUid()).equalTo(firebaseAuth.getCurrentUser().getUid()).addValueEventListener(new ValueEventListener() {
+        groupUsersRef.orderByChild(firebaseAuth.getCurrentUser().getUid()).equalTo(firebaseAuth.getCurrentUser().getUid()).addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot data : dataSnapshot.getChildren()) {
-                    final String groupId = data.getKey();
-                    Log.v("groupId", groupId);
-                    groupsRef.child(groupId).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            GroupBean groupBean = dataSnapshot.getValue(GroupBean.class);
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                String groupId = dataSnapshot.getKey();
+                Log.v("groupId", groupId);
+                groupsRef.child(groupId).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        GroupBean groupBean = dataSnapshot.getValue(GroupBean.class);
+                        if(!groupBean.getGroupName().equalsIgnoreCase("") && !groupListBeans.contains(groupBean)) {
                             groupListBeans.add(groupBean);
-                            adapter = new GroupAdapter(groupListBeans, getContext(), firebaseAuth, onItemClickListener);
-                            recyclerView.setItemAnimator(new DefaultItemAnimator());
-                            recyclerView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
                         }
+                    }
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                        }
-                    });
-                }
+                    }
+                });
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
 
             }
 

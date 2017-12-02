@@ -22,6 +22,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -39,7 +40,7 @@ public class GroupActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private FirebaseAuth firebaseAuth;
-    private List<FriendsBean> friendsBeans,groupFriends;
+    private List<FriendsBean> friendsBeans, groupFriends;
     private EditText mTextGroupName;
     private ImageButton addUsers;
     private GroupBean groupBean;
@@ -58,6 +59,7 @@ public class GroupActivity extends AppCompatActivity {
         Intent intent = getIntent();
         groupBean = (GroupBean) intent.getSerializableExtra("groupBean");
         groupRef = FirebaseDatabase.getInstance().getReference("Groups");
+        mTextGroupName = findViewById(R.id.textGroupName);
         if (groupBean == null) {
             setTitle("New Group");
             groupId = groupRef.push().getKey();
@@ -66,17 +68,21 @@ public class GroupActivity extends AppCompatActivity {
         } else {
             groupId = groupBean.getGroupId();
             setTitle(groupBean.getGroupName());
+            mTextGroupName.setText(groupBean.getGroupName());
         }
-        groupFriends=new ArrayList<>();
+        groupFriends = new ArrayList<>();
         groupUsersRef = FirebaseDatabase.getInstance().getReference("GroupUsers").child(groupId);
         friendsRef = FirebaseDatabase.getInstance().getReference("friends").child(firebaseAuth.getCurrentUser().getUid());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mTextGroupName = findViewById(R.id.textGroupName);
+
         addUsers = findViewById(R.id.addUsers);
         recyclerView = findViewById(R.id.groupRecyclerView);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getBaseContext()));
         friendsBeans = new ArrayList<>();
+        adapter = new FriendsAdapter(groupFriends, getApplicationContext());
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(adapter);
         addUsers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,18 +135,19 @@ public class GroupActivity extends AppCompatActivity {
                 openDialog();
                 break;
             case R.id.menu_check:
-                if(mTextGroupName.getText().toString().equalsIgnoreCase(""))
+                if (mTextGroupName.getText().toString().equalsIgnoreCase(""))
                     mTextGroupName.setError("Enter Group Name");
                 else {
-                    groupBean.setPeopleCount(groupCount);
+                    groupBean.setPeopleCount(groupFriends.size());
                     groupBean.setGroupName(mTextGroupName.getText().toString());
                     groupRef.child(groupId).setValue(groupBean);
                     finish();
                 }
                 break;
             default:
-                if(groupCount<=1){
+                if (groupCount <= 1) {
                     groupRef.child(groupId).removeValue();
+                    groupUsersRef.removeValue();
                 }
                 finish();
         }
@@ -165,6 +172,7 @@ public class GroupActivity extends AppCompatActivity {
                 groupRef.child(groupId).removeValue();
                 groupUsersRef.removeValue();
                 dialog.dismiss();
+                finish();
             }
 
         });
@@ -177,7 +185,7 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    FriendsBean friendsBean=snapshot.getValue(FriendsBean.class);
+                    FriendsBean friendsBean = snapshot.getValue(FriendsBean.class);
                     friendsBeans.add(friendsBean);
                 }
             }
@@ -187,31 +195,39 @@ public class GroupActivity extends AppCompatActivity {
 
             }
         });
-        groupUsersRef.addValueEventListener(new ValueEventListener() {
+        groupUsersRef.addChildEventListener(new ChildEventListener() {
             @Override
-            public void onDataChange(final DataSnapshot dataSnapshot) {
-                groupFriends.clear();
-                groupCount=((Long)dataSnapshot.getChildrenCount()).intValue();
+            public void onChildAdded(DataSnapshot dataSnapshot, String s) {
+                friendsRef.child(dataSnapshot.getKey()).addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snap) {
+                        FriendsBean friendsBean = snap.getValue(FriendsBean.class);
+                        groupFriends.add(friendsBean);
+                        adapter.notifyDataSetChanged();
+                    }
 
-                for(DataSnapshot data : dataSnapshot.getChildren()){
-                    friendsRef.child(data.getKey()).addValueEventListener(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot snap) {
-                            FriendsBean friendsBean=snap.getValue(FriendsBean.class);
-                            groupFriends.add(friendsBean);
-                            adapter.notifyDataSetChanged();
-                        }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
-
-                        }
-                    });
-                }
-                adapter=new FriendsAdapter(groupFriends,getApplicationContext());
-                recyclerView.setItemAnimator(new DefaultItemAnimator());
-                recyclerView.setAdapter(adapter);
+                    }
+                });
             }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
             @Override
             public void onCancelled(DatabaseError databaseError) {
 

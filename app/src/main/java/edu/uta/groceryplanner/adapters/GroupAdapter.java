@@ -19,7 +19,7 @@ import edu.uta.groceryplanner.beans.GroupBean;
  * Created by Vaibhav's Console on 12/1/2017.
  */
 
-public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder>  {
+public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> {
     private List<GroupBean> beanList;
     private Context context;
     private FirebaseAuth firebaseAuth;
@@ -31,36 +31,43 @@ public class GroupAdapter extends RecyclerView.Adapter<GroupAdapter.ViewHolder> 
         this.firebaseAuth = firebaseAuth;
         this.mItemClickListener = mItemClickListener;
     }
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+
+    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         private CardView title;
-        private TextView groupName,groupCount;
+        private TextView groupName, groupCount;
+
         public ViewHolder(View itemView) {
             super(itemView);
-            title= itemView.findViewById(R.id.title);
-            groupName= itemView.findViewById(R.id.groupName);
-            groupCount= itemView.findViewById(R.id.groupCount);
+            title = itemView.findViewById(R.id.title);
+            groupName = itemView.findViewById(R.id.groupName);
+            groupCount = itemView.findViewById(R.id.groupCount);
             title.setOnClickListener(this);
         }
+
         @Override
         public void onClick(View view) {
-            if (mItemClickListener != null) mItemClickListener.onItemClick(itemView,getPosition());
+            if (mItemClickListener != null) mItemClickListener.onItemClick(itemView, getPosition());
         }
     }
+
     @Override
     public GroupAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new GroupAdapter.ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.group_item,parent,false));
+        return new GroupAdapter.ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.group_item, parent, false));
     }
+
     @Override
     public void onBindViewHolder(GroupAdapter.ViewHolder holder, int position) {
-        GroupBean groupBean=beanList.get(position);
+        GroupBean groupBean = beanList.get(position);
         if(groupBean!=null) {
             holder.groupName.setText(groupBean.getGroupName());
             holder.groupCount.setText("People Count: " + groupBean.getPeopleCount());
         }
     }
+
     public interface OnItemClickListener {
         void onItemClick(View view, int position);
     }
+
     @Override
     public int getItemCount() {
         return beanList.size();

@@ -65,7 +65,8 @@
         <activity android:name=".ExpenseSplitterChecklistActivity" />
         <activity android:name=".GroupActivity" />
         <activity android:name=".HelpActivity" />
-        <activity android:name=".AboutActivity"></activity>
+        <activity android:name=".AboutActivity" />
+        <activity android:name=".GroupListActivity"></activity>
     </application>
 
 </manifest>

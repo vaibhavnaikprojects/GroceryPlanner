@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:descendantFocusability="beforeDescendants"
+
     tools:context="edu.uta.groceryplanner.GroupActivity">
     <ImageView
         android:id="@+id/imageView1"
@@ -32,7 +33,7 @@
         android:layout_width="match_parent"
         android:layout_height="420dp"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/textListName"
+        android:layout_below="@+id/textGroupName"
         android:orientation="vertical">
 
         <android.support.v7.widget.RecyclerView

@@ -34,7 +34,7 @@
                     android:layout_width="271dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="3"
-                    android:text="@string/testing"
+                    android:text=""
                     android:textColor="#fff" />
 
                 <ImageView
@@ -52,7 +52,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/card_title"
                 android:padding="8dp"
-                android:text="listType"
+                android:text=""
                 android:textColor="@color/black"
                 android:textSize="12sp" />
 
