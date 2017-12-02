@@ -3,6 +3,7 @@ package edu.uta.groceryplanner;
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Intent;
+import android.service.autofill.Dataset;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -39,10 +40,10 @@ public class AddBillActivity extends AppCompatActivity {
     private MultiAutoCompleteTextView autoTextSplitBetween;
     private EditText editTextDescription;
     private EditText editTextExpense;
-    private DatabaseReference databaseReference;
+    private DatabaseReference databaseReference, friendsRef;
     private FirebaseAuth firebaseAuth;
     private List<String> friendsList;
-
+    double owePrice,number;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +57,7 @@ public class AddBillActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         friendsList = new ArrayList<String>();
         databaseReference = FirebaseDatabase.getInstance().getReference("friends").child(firebaseAuth.getCurrentUser().getUid());
+        friendsRef = FirebaseDatabase.getInstance().getReference("friends");
 
         fetchAllFriends();
         createAutoCompleteView();
@@ -66,18 +68,92 @@ public class AddBillActivity extends AppCompatActivity {
         final String[] friendNameList = autoTextPickName.getText().toString().split(",");
         String description = editTextDescription.getText().toString();
         final double expense = Double.valueOf(editTextExpense.getText().toString());
-
+        number = friendNameList.length;
+        final double individual=expense/number;
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot snap: dataSnapshot.getChildren()){
-                    FriendsBean friendsBean = snap.getValue(FriendsBean.class);
-                    for(String friendName: friendNameList) {
+                    final FriendsBean friendsBean = snap.getValue(FriendsBean.class);
+                    for(final String friendName: friendNameList) {
                         if (friendsBean.getFriendName().equals(friendName.trim())) {
-                            double number = friendNameList.length;
-                            friendsBean.setOwePrice(friendsBean.getOwePrice() + (expense/number));
-                            friendsBean.setOweStatus("Owes You");
+                            if(friendsBean.getOweStatus().equalsIgnoreCase("Owes You")){
+                                double actual=friendsBean.getOwePrice()+individual;
+                                if(actual>0){
+                                    friendsBean.setOwePrice(actual);
+                                    friendsBean.setOweStatus("Owes You");
+                                }
+                            }
+                            else if(friendsBean.getOweStatus().equalsIgnoreCase("You Owe")){
+                                double actual=friendsBean.getOwePrice()-individual;
+                                if(actual<0) {
+                                    friendsBean.setOwePrice(Math.abs(actual));
+                                    friendsBean.setOweStatus("Owes You");
+                                }else if(actual>0){
+                                    friendsBean.setOwePrice(actual);
+                                    friendsBean.setOweStatus("You Owe");
+                                }
+                                else{
+                                    friendsBean.setOwePrice(0);
+                                    friendsBean.setOweStatus("resolved");
+                                }
+                            }
+                            else{
+                                double actual=friendsBean.getOwePrice()+individual;
+                                if(actual>0){
+                                    friendsBean.setOwePrice(actual);
+                                    friendsBean.setOweStatus("Owes You");
+                                }
+                            }
                             databaseReference.child(friendsBean.getFriendId()).setValue(friendsBean);
+                            friendsRef.child(friendsBean.getFriendId()).addListenerForSingleValueEvent(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(DataSnapshot dataSnapshot) {
+                                    for(DataSnapshot dataSnapshot1: dataSnapshot.getChildren()){
+                                        FriendsBean friendsBean1 = dataSnapshot1.getValue(FriendsBean.class);
+                                        if(friendsBean1.getFriendId().equals(firebaseAuth.getCurrentUser().getUid())){
+                                            if(friendsBean1.getOweStatus().equalsIgnoreCase("Owes You")){
+                                                double actual=friendsBean.getOwePrice()-individual;
+                                                if(actual<0) {
+                                                    friendsBean.setOwePrice(Math.abs(actual));
+                                                    friendsBean.setOweStatus("You Owe");
+                                                }else if(actual>0){
+                                                    friendsBean.setOwePrice(actual);
+                                                    friendsBean.setOweStatus("Owes you");
+                                                }
+                                                else{
+                                                    friendsBean.setOwePrice(0);
+                                                    friendsBean.setOweStatus("resolved");
+                                                }
+                                            }
+                                            else if(friendsBean1.getOweStatus().equalsIgnoreCase("You Owe")){
+                                                double actual=friendsBean.getOwePrice()+individual;
+                                                if(actual>0) {
+                                                    friendsBean.setOwePrice(Math.abs(actual));
+                                                    friendsBean.setOweStatus("You Owe");
+                                                }
+                                            }
+                                            else{
+                                                double actual=friendsBean.getOwePrice()+individual;
+                                                if(actual>0){
+                                                    friendsBean.setOwePrice(actual);
+                                                    friendsBean.setOweStatus("You Owe");
+                                                }
+                                            }
+                                            friendsBean1.setOwePrice(friendsBean1.getOwePrice() + (expense/number));
+                                            friendsBean1.setOweStatus("You Owe");
+                                            friendsRef.child(friendsBean.getFriendId()).child(friendsBean1.getFriendId()).setValue(friendsBean1);
+                                        }
+                                    }
+
+                                }
+
+                                @Override
+                                public void onCancelled(DatabaseError databaseError) {
+
+                                }
+                            });
+
                         }
                     }
                 }

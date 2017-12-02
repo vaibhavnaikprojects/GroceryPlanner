@@ -31,7 +31,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@drawable/edittextbackground"
-                android:hint="Pick a friend or group"
+                android:hint="Pick a friend"
                 android:padding="@dimen/text_margin" />
         </LinearLayout>
     </android.support.v7.widget.CardView>
