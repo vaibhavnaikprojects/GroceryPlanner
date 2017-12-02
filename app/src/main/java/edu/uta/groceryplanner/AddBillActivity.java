@@ -113,14 +113,21 @@ public class AddBillActivity extends AppCompatActivity {
                                         FriendsBean friendsBean1 = dataSnapshot1.getValue(FriendsBean.class);
                                         if(friendsBean1.getFriendId().equals(firebaseAuth.getCurrentUser().getUid())){
                                             if(friendsBean1.getOweStatus().equalsIgnoreCase("Owes You")){
-                                                double actual=friendsBean.getOwePrice()+individual;
-                                                if(actual>0) {
+                                                double actual=friendsBean.getOwePrice()-individual;
+                                                if(actual<0) {
                                                     friendsBean.setOwePrice(Math.abs(actual));
                                                     friendsBean.setOweStatus("You Owe");
+                                                }else if(actual>0){
+                                                    friendsBean.setOwePrice(actual);
+                                                    friendsBean.setOweStatus("Owes you");
+                                                }
+                                                else{
+                                                    friendsBean.setOwePrice(0);
+                                                    friendsBean.setOweStatus("resolved");
                                                 }
                                             }
                                             else if(friendsBean1.getOweStatus().equalsIgnoreCase("You Owe")){
-                                                double actual=friendsBean.getOwePrice()-individual;
+                                                double actual=friendsBean.getOwePrice()+individual;
                                                 if(actual<0) {
                                                     friendsBean.setOwePrice(Math.abs(actual));
                                                     friendsBean.setOweStatus("You Owe");
