@@ -76,7 +76,7 @@ public class AddBillActivity extends AppCompatActivity {
                 for(DataSnapshot snap: dataSnapshot.getChildren()){
                     final FriendsBean friendsBean = snap.getValue(FriendsBean.class);
                     for(final String friendName: friendNameList) {
-                        if (friendsBean.getFriendName().equals(friendName.trim())) {
+                        if (friendsBean.getFriendName().equalsIgnoreCase(friendName.trim())) {
                             if(friendsBean.getOweStatus().equalsIgnoreCase("Owes You")){
                                 double actual=friendsBean.getOwePrice()+individual;
                                 if(actual>0){
@@ -113,36 +113,36 @@ public class AddBillActivity extends AppCompatActivity {
                                         FriendsBean friendsBean1 = dataSnapshot1.getValue(FriendsBean.class);
                                         if(friendsBean1.getFriendId().equals(firebaseAuth.getCurrentUser().getUid())){
                                             if(friendsBean1.getOweStatus().equalsIgnoreCase("Owes You")){
-                                                double actual=friendsBean.getOwePrice()-individual;
+                                                double actual=friendsBean1.getOwePrice()-individual;
                                                 if(actual<0) {
-                                                    friendsBean.setOwePrice(Math.abs(actual));
-                                                    friendsBean.setOweStatus("You Owe");
+                                                    friendsBean1.setOwePrice(Math.abs(actual));
+                                                    friendsBean1.setOweStatus("You Owe");
                                                 }else if(actual>0){
-                                                    friendsBean.setOwePrice(actual);
-                                                    friendsBean.setOweStatus("Owes you");
+                                                    friendsBean1.setOwePrice(actual);
+                                                    friendsBean1.setOweStatus("Owes you");
                                                 }
                                                 else{
-                                                    friendsBean.setOwePrice(0);
-                                                    friendsBean.setOweStatus("resolved");
+                                                    friendsBean1.setOwePrice(0);
+                                                    friendsBean1.setOweStatus("resolved");
                                                 }
                                             }
                                             else if(friendsBean1.getOweStatus().equalsIgnoreCase("You Owe")){
-                                                double actual=friendsBean.getOwePrice()+individual;
+                                                double actual=friendsBean1.getOwePrice()+individual;
                                                 if(actual<0) {
-                                                    friendsBean.setOwePrice(Math.abs(actual));
-                                                    friendsBean.setOweStatus("You Owe");
+                                                    friendsBean1.setOwePrice(Math.abs(actual));
+                                                    friendsBean1.setOweStatus("You Owe");
                                                 }else if(actual>0){
-                                                    friendsBean.setOwePrice(actual);
-                                                    friendsBean.setOweStatus("Owes you");
+                                                    friendsBean1.setOwePrice(actual);
+                                                    friendsBean1.setOweStatus("Owes you");
                                                 }
                                                 else{
-                                                    friendsBean.setOwePrice(0);
-                                                    friendsBean.setOweStatus("resolved");
+                                                    friendsBean1.setOwePrice(0);
+                                                    friendsBean1.setOweStatus("resolved");
                                                 }
 
                                             }
                                             else{
-                                                double actual=friendsBean.getOwePrice()+individual;
+                                                double actual=friendsBean1.getOwePrice()+individual;
                                                 if(actual>0){
                                                     friendsBean.setOwePrice(actual);
                                                     friendsBean.setOweStatus("You Owe");
@@ -151,6 +151,7 @@ public class AddBillActivity extends AppCompatActivity {
                                             friendsBean1.setOwePrice(friendsBean1.getOwePrice() + (expense/number));
                                             friendsBean1.setOweStatus("You Owe");
                                             friendsRef.child(friendsBean.getFriendId()).child(friendsBean1.getFriendId()).setValue(friendsBean1);
+                                            break;
                                         }
                                     }
 
