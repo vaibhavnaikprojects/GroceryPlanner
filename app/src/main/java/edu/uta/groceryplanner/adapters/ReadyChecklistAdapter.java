@@ -26,11 +26,12 @@ public class ReadyChecklistAdapter extends RecyclerView.Adapter<ReadyChecklistAd
     private List<ProductBean> productBeans;
     private Context context;
     private FirebaseAuth firebaseAuth;
-    private ProductAdapter.OnItemClickListener mItemClickListener;
+    private ReadyChecklistAdapter.OnItemClickListener mItemClickListener;
 
-    public ReadyChecklistAdapter(List<ProductBean> productBeans, Context context){
+    public ReadyChecklistAdapter(List<ProductBean> productBeans, Context context,ReadyChecklistAdapter.OnItemClickListener mItemClickListener){
         this.productBeans=productBeans;
         this.context=context;
+        this.mItemClickListener=mItemClickListener;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{

@@ -1,5 +1,7 @@
 package edu.uta.groceryplanner;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomSheetDialog;
@@ -13,6 +15,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -171,7 +175,7 @@ public class ReadyListActivity extends AppCompatActivity {
                     ProductBean productBean = dataSnap.getValue(ProductBean.class);
                     productBeans.add(productBean);
                 }
-                adapter = new ReadyChecklistAdapter(productBeans, getApplicationContext());
+                adapter = new ReadyChecklistAdapter(productBeans, getApplicationContext(),onItemClickListener);
                 recyclerView.setItemAnimator(new DefaultItemAnimator());
                 recyclerView.setAdapter(adapter);
             }
@@ -182,6 +186,57 @@ public class ReadyListActivity extends AppCompatActivity {
             }
         });
     }
+
+    ReadyChecklistAdapter.OnItemClickListener onItemClickListener = new ReadyChecklistAdapter.OnItemClickListener() {
+        @Override
+        public void onItemClick(View view, int position) {
+            final ProductBean productBean = productBeans.get(position);
+            View modal = getLayoutInflater().inflate(R.layout.product_ready_modal, null);
+            final TextView title=modal.findViewById(R.id.textView2);
+            final EditText rate=modal.findViewById(R.id.rate);
+            AlertDialog dialog = new AlertDialog.Builder(ReadyListActivity.this)
+                    .setView(modal)
+                    .setCancelable(false)
+                    .setPositiveButton("Add", null)
+                    .setNegativeButton("Remove", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            productBean.setRate(0);
+                            productBean.setCost(0);
+                            productBean.setStatus("uncheck");
+                            productsRef.child(productBean.getProductId()).setValue(productBean);
+                        }
+                    })
+                    .setNeutralButton("Cancel", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            dialogInterface.cancel();
+                        }
+                    }).create();
+            dialog.setOnShowListener(new DialogInterface.OnShowListener() {
+                @Override
+                public void onShow(final DialogInterface dialog) {
+                    Button button = ((AlertDialog) dialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                    title.setText(productBean.getProductName());
+                    button.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if(rate.getText().toString().equalsIgnoreCase(""))
+                                rate.setError("Enter Rate");
+                            else{
+                                productBean.setRate(Double.parseDouble(rate.getText().toString()));
+                                productBean.setCost(Double.parseDouble(rate.getText().toString())*Double.parseDouble(productBean.getQuantity()));
+                                productBean.setStatus("check");
+                                productsRef.child(productBean.getProductId()).setValue(productBean);
+                                dialog.dismiss();
+                            }
+                        }
+                    });
+                }
+            });
+            dialog.show();
+        }
+    };
     private String getCurrentDate() {
         return new SimpleDateFormat("MM/dd/yyyy HH:mm:ss").format(Calendar.getInstance().getTime());
     }

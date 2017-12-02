@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:descendantFocusability="beforeDescendants"
     tools:context="edu.uta.groceryplanner.GroupActivity">
     <ImageView
         android:id="@+id/imageView1"
@@ -43,8 +44,8 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/addGroupBtn"
-        android:layout_width="wrap_content"
+        android:id="@+id/addUsers"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
@@ -54,16 +55,5 @@
         android:paddingTop="@dimen/activity_horizontal_margin"
         android:paddingBottom="@dimen/activity_horizontal_margin"
         app:srcCompat="@drawable/ic_add_white_24dp" />
-    <ImageButton
-        android:id="@+id/imageButtonCheck"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:paddingLeft="85dp"
-        android:paddingRight="85dp"
-        android:paddingTop="@dimen/activity_horizontal_margin"
-        android:paddingBottom="@dimen/activity_horizontal_margin"
-        android:layout_toRightOf="@+id/addGroupBtn"
-        android:background="@color/colorPrimaryDark"
-        app:srcCompat="@drawable/ic_check_black_24dp" />
+
 </RelativeLayout>

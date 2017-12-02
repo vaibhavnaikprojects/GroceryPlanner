@@ -1,9 +1,6 @@
 package edu.uta.groceryplanner;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -77,8 +74,10 @@ public class InfoFragment extends Fragment {
                     sendResetPasswordEmail(firebaseAuth.getCurrentUser().getEmail());
                     break;
                 case 2:
+                    startActivity(new Intent(getContext(),HelpActivity.class));
                     break;
                 case 3:
+                    startActivity(new Intent(getContext(),AboutActivity.class));
                     break;
                 case 4:
                     Toast.makeText(getContext(), "Signing out", Toast.LENGTH_SHORT).show();
