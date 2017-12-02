@@ -1,4 +1,6 @@
 package edu.uta.groceryplanner.walmart;
+import android.util.Log;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -36,7 +38,7 @@ public class ManageProduct {
 				throw new RuntimeException("Failed to connect to walmart REST service"+con.getResponseCode()+con.getResponseMessage());
 			}
 		}catch(Exception e) {
-			System.out.println(e.getMessage());
+			Log.d("walmart REST error",e.getMessage());
 		}
 	}
 
