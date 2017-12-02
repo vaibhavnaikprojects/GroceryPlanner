@@ -220,8 +220,8 @@ public class StatisticsFragment extends Fragment{
 
                                 for(Map.Entry<String,Integer> countEntry: productCount.entrySet()) {
                                  if(countEntry.getKey().equals(costEntry.getKey())) {
-                                     statisticsBeanList.add(new StatisticsBean(costEntry.getKey(),costEntry.getValue(), ((countEntry.getValue().doubleValue()*100)/totalCount)));
-                                     entry.add(new PieEntry(Float.valueOf(Double.toString((costEntry.getValue()/totalCost)*100)),costEntry.getKey()));
+                                     statisticsBeanList.add(new StatisticsBean(costEntry.getKey(),costEntry.getValue(), Math.round((countEntry.getValue().doubleValue()*100)/totalCount)));
+                                     entry.add(new PieEntry(Float.valueOf(Double.toString(Math.round((costEntry.getValue()/totalCost)*100))),costEntry.getKey()));
 
                                  }
                                 }
