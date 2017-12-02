@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
@@ -15,6 +16,7 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.CheckBox;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,12 +48,11 @@ public class ExpenseSplitterChecklistActivity extends AppCompatActivity {
     private TextView textViewListName;
     private DatabaseReference productRef;
     private DatabaseReference friendsRef;
-    private AutoCompleteTextView autoTextPaidBy;
     private String listId;
     private ListBean listBean;
     private Double totalProductCost = 0.00;
     private List<String> friendsList;
-
+    private CardView cardView2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,17 +71,19 @@ public class ExpenseSplitterChecklistActivity extends AppCompatActivity {
         textViewListName.setText(listBean.getListName());
         textViewIndividualAmount = findViewById(R.id.textViewIndividualAmount);
         textViewTotalAmount = findViewById(R.id.textViewTotalAmount);
-        autoTextPaidBy = findViewById(R.id.autoTextPaidBy);
         recyclerView= findViewById(R.id.recyclerViewExpenseChecklist);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
         productBeanList = new ArrayList<>();
         friendsList = new ArrayList<>();
+        cardView2 = findViewById(R.id.cardView2);
 
-        ArrayAdapter<String> paidByAdapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_dropdown_item_1line, friendsList);
-        AutoCompleteTextView paidByView = findViewById(R.id.autoTextPaidBy);
-        paidByView.setAdapter(paidByAdapter);
+        if(listBean.getListType().equalsIgnoreCase("personal")) {
+                textViewIndividualAmount.setVisibility(View.GONE);
+                textViewTotalAmount.setPadding(50,50,50,50);
+                cardView2.setMinimumHeight(150);
+        }
+
     }
 
     @Override
@@ -98,8 +101,8 @@ public class ExpenseSplitterChecklistActivity extends AppCompatActivity {
                         productBeanList.add(productBean);
                     }
                 }
-                textViewIndividualAmount.setText("Individual Expense: "+totalProductCost/5.0+"$");
-                textViewTotalAmount.setText("Total Expense: "+totalProductCost+"$");
+                textViewIndividualAmount.setText("Individual Expense: "+Math.round(totalProductCost/5.0)+"$");
+                textViewTotalAmount.setText("Total Expense: "+Math.round(totalProductCost)+"$");
                 getFriends();
                 adapter=new ExpenseSplitterChecklistAdapter(productBeanList,getApplicationContext(),firebaseAuth);
                 recyclerView.setAdapter(adapter);
@@ -139,7 +142,6 @@ public class ExpenseSplitterChecklistActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         Toast.makeText(this, "Saved expenses", Toast.LENGTH_SHORT).show();
-        autoTextPaidBy.setEnabled(false);
         startActivity(new Intent(getApplicationContext(),HomeActivity.class));
         return true;
     }

@@ -97,6 +97,7 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_gravity="center"
+                android:padding="@dimen/text_margin"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
             <TextView
@@ -117,39 +118,6 @@
                 android:paddingTop="@dimen/text_margin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textViewPaidBy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_marginLeft="@dimen/text_margin"
-                    android:text="Paid by " />
-
-                <AutoCompleteTextView
-                    android:id="@+id/autoTextPaidBy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_toEndOf="@+id/textViewPaidBy"
-                    android:hint="You"
-                    android:textStyle="bold"
-                    android:textSize="@dimen/activity_horizontal_margin"
-                    />
-
-                <TextView
-                    android:id="@+id/textViewSplitLabel"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:layout_toEndOf="@+id/autoTextPaidBy"
-                    android:text="and split Equally"/>
-
             </LinearLayout>
         </LinearLayout>
     </android.support.v7.widget.CardView>
