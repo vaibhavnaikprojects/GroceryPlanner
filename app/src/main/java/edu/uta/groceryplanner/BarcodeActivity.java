@@ -90,6 +90,7 @@ public class BarcodeActivity extends Activity implements View.OnClickListener {
             Intent intent = new Intent(this, BarcodeCaptureActivity.class);
             startActivityForResult(intent, RC_BARCODE_CAPTURE);
         }
+
     }
 
     /**
@@ -131,7 +132,7 @@ public class BarcodeActivity extends Activity implements View.OnClickListener {
                             try {
                                 product = ManageProduct.getProduct(barcode.displayValue);
                             } catch (ParseException e) {
-                                e.printStackTrace();
+                                Log.d("ParseException",e.getMessage());
                             }
                         }
                     });
@@ -139,25 +140,26 @@ public class BarcodeActivity extends Activity implements View.OnClickListener {
                     try {
                         restThread.join();
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        Log.d("Interrupt Exception",e.getMessage());
                     }
-                    mbase = FirebaseDatabase.getInstance().getReference("Products");
+                    if(product != null) {
+                        mbase = FirebaseDatabase.getInstance().getReference("Products");
                         //Log.d("product",productList.get(i).getProductName());
                         mbase.child(list.getListId()).addListenerForSingleValueEvent(new ValueEventListener() {
                             @Override
                             public void onDataChange(DataSnapshot dataSnapshot) {
-                                for(DataSnapshot d : dataSnapshot.getChildren()) {
-                                    if ("uncheck".equalsIgnoreCase(d.child("status").getValue().toString())){
+                                for (DataSnapshot d : dataSnapshot.getChildren()) {
+                                    if ("uncheck".equalsIgnoreCase(d.child("status").getValue().toString())) {
                                         String pname = d.child("productName").getValue().toString();
                                         String[] pwords = pname.split(" ");
-                                        int flag=0;
-                                        for(String s:pwords){
-                                            if(!product.getProductName().toLowerCase().contains(s.toLowerCase())){
-                                                flag=1;
+                                        int flag = 0;
+                                        for (String s : pwords) {
+                                            if (!product.getProductName().toLowerCase().contains(s.toLowerCase())) {
+                                                flag = 1;
                                                 break;
                                             }
                                         }
-                                        if(flag==0) {
+                                        if (flag == 0) {
                                             Map<String, Object> m = new HashMap<String, Object>();
                                             m.put("status", "check");
                                             m.put("cost", (product.getCost() * Double.parseDouble((String) d.child("quantity").getValue())));
@@ -167,13 +169,16 @@ public class BarcodeActivity extends Activity implements View.OnClickListener {
                                         }
                                     }
                                 }
+                                finish();
                             }
-
                             @Override
                             public void onCancelled(DatabaseError databaseError) {
 
                             }
                         });
+                    }else{
+                        finish();
+                    }
                 } else {
                     statusMessage.setText(R.string.barcode_failure);
                     Log.d(TAG, "No barcode captured, intent data is null");
@@ -186,8 +191,5 @@ public class BarcodeActivity extends Activity implements View.OnClickListener {
         else {
             super.onActivityResult(requestCode, resultCode, data);
         }
-        Intent backtoReadyList = new Intent();
-        setResult(Activity.RESULT_OK,backtoReadyList);
-        finish();
     }
 }

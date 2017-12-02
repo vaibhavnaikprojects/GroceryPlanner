@@ -46,6 +46,11 @@ public class ReadyListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ready_list);
+        Thread.setDefaultUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
+            public void uncaughtException(Thread paramThread, Throwable paramThrowable) {
+                Log.e("Error"+Thread.currentThread().getStackTrace()[2],paramThrowable.getLocalizedMessage());
+            }
+        });
         firebaseAuth = FirebaseAuth.getInstance();
         if (firebaseAuth == null) {
             startActivity(new Intent(getBaseContext(), LoginActivity.class));
