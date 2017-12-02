@@ -47,10 +47,10 @@ public class ReadyChecklistAdapter extends RecyclerView.Adapter<ReadyChecklistAd
             productCost = itemView.findViewById(R.id.cost);
             productCheck = itemView.findViewById(R.id.readOnlyCheckBox);
             draftProductItem.setOnClickListener(this);
-            productName.setEnabled(false);
-            productQuantity.setEnabled(false);
-            productCost.setEnabled(false);
-            productCheck.setEnabled(false);
+            productName.setEnabled(true);
+            productQuantity.setEnabled(true);
+            productCost.setEnabled(true);
+            productCheck.setEnabled(true);
         }
         @Override
         public void onClick(View view) {
