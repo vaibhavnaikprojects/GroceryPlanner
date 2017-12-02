@@ -64,12 +64,6 @@ public class FriendsBean {
 
     @Override
     public String toString() {
-        return "FriendsBean{" +
-                "friendId='" + friendId + '\'' +
-                ", friendName='" + friendName + '\'' +
-                ", friendEmail='" + friendEmail + '\'' +
-                ", oweStatus='" + oweStatus + '\'' +
-                ", owePrice='" + owePrice + '\'' +
-                '}';
+        return friendName;
     }
 }

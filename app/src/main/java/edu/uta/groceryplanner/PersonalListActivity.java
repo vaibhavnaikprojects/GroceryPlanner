@@ -42,7 +42,7 @@ public class PersonalListActivity extends AppCompatActivity {
     private EditText mTextListName, addProduct;
     DatabaseReference listRef, productsRef;
     private ImageButton imageButtonMenu, imageButtonAddPredifined;
-
+    private int productCount;
     ListBean listBean;
     String listId = null;
 
@@ -170,14 +170,18 @@ public class PersonalListActivity extends AppCompatActivity {
                     } else {
                         listBean.setUpdatedDate(getCurrentDate());
                     }
+                    listBean.setProductCount(productBeans.size());
                     listRef.child(listId).setValue(listBean);
                     finish();
                 }
                 break;
             default:
-                if ("".contentEquals(listBean.getListName())) {
-                    listBean.setListName("New List");
+                if ("".contentEquals(listBean.getListName()) && productBeans.size()==0) {
+                    listRef.child(listId).removeValue();
+                }
+                else{
                     listBean.setUpdatedDate(getCurrentDate());
+                    listBean.setProductCount(productBeans.size());
                     listRef.child(listId).setValue(listBean);
                 }
                 finish();

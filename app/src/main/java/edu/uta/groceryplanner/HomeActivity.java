@@ -10,9 +10,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import edu.uta.groceryplanner.beans.FriendsBean;
 
 public class HomeActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
+    private DatabaseReference friendsRef;
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -52,6 +60,18 @@ public class HomeActivity extends AppCompatActivity {
             finish();
             startActivity(new Intent(getApplicationContext(),LoginActivity.class));
         }
+        friendsRef= FirebaseDatabase.getInstance().getReference("friends").child(firebaseAuth.getCurrentUser().getUid());
+        friendsRef.child(firebaseAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists())
+                    friendsRef.child(firebaseAuth.getCurrentUser().getUid()).setValue(new FriendsBean(firebaseAuth.getCurrentUser().getUid(), firebaseAuth.getCurrentUser().getDisplayName(), firebaseAuth.getCurrentUser().getEmail(), "resolved", 0));
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
         FragmentManager fragmentManager=getSupportFragmentManager();
         FragmentTransaction fragmentTransaction=fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.content,new ListFragment()).commit();

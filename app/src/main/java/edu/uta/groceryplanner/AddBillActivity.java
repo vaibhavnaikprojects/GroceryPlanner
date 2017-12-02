@@ -1,11 +1,7 @@
 package edu.uta.groceryplanner;
 
-import android.app.Activity;
-import android.content.ComponentName;
-import android.content.Intent;
-import android.service.autofill.Dataset;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -23,15 +19,10 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 
 import edu.uta.groceryplanner.beans.FriendsBean;
-import edu.uta.groceryplanner.beans.GroupBean;
-import edu.uta.groceryplanner.beans.ListBean;
 
 public class AddBillActivity extends AppCompatActivity {
 
@@ -149,10 +140,7 @@ public class AddBillActivity extends AppCompatActivity {
                                                     friendsBean.setOweStatus("You Owe");
                                                 }
                                             }
-                                            friendsBean1.setOwePrice(friendsBean1.getOwePrice() + (expense/number));
-                                            friendsBean1.setOweStatus("You Owe");
                                             friendsRef.child(friendsBean.getFriendId()).child(friendsBean1.getFriendId()).setValue(friendsBean1);
-                                            break;
                                         }
                                     }
 

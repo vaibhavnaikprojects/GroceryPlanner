@@ -48,11 +48,44 @@
     <html>
         <body>
             <div>
+               <b>App is still not on Play Store</b>
                <p>Download the app <a href="%%APPINVITE_LINK_PLACEHOLDER%%">here</a></p>
             </div>
         </body>
     </html>]]>
     </string>
     <string name="invitation_email_subject">Hey! Check out Grocery Planner App </string>
-
+    <string name="help1">
+        Homepage Tabs: The app provides two different tabs, List Manager and Statistics. List Manager shall help the user to create, modify, view and share list along with splitting expenses among the group. Statistics tab, on the other hand, will provide user related expenditure. Users shall see their monthly expenses. Moreover, User can see personal and group expenses with the help of charts.
+    </string>
+    <string name="help2">
+    User Login: In order to store all the user specific data, the app shall have a login screen where the users need to fill their credentials once and the app will store the credential so the user does not have to log in each and every time. If a user has never registered, the app shall provide an option to fill a form which will need their basic details. Users shall also be able to sign into the app using their Google/Facebook accounts for better convenience.
+    </string>
+    <string name="help3">
+        Group/Personal Lists: Usually, People shop in groups. Now shopping together has its own problems. Every person has his/her personal list and then we try to combine them. This creates unnecessary hassle. The app will sort out things and help them manage groceries collaboratively. The app shall allow user to create a list and add other members to the list which can make it easy for everyone to manage a single list properly. Users will have an option of maintaining their personal lists as well.
+    </string>
+    <string name="help4">
+        Invites: The app will have a feature which will help the users to invite people to a group or the app if they are not registered. The user will give the person’s email id and a notification will be sent to the person to join the group and start sharing the list.
+    </string>
+    <string name="help5">
+    Predefined product categories: Nowadays, we need everything at our fingertips. With this as our inception thoughts, the user will be able to create a list with predefined product categories. This means when the user starts adding stuff to the list, he/she will be able to see categories such as dairy products, vegetables, veggies, etc. This will help users to easily add items to the cart without the hassle of writing everything that you need. Just to keep a check on the quantity it will also show a count right next to the category so that you don’t miss out on the quantity. Don’t find something in the categories? No worries, the app also provides a way to add custom items.
+    </string>
+    <string name="help6">
+        Expense splitter: Shopping together also comes with another issue of splitting the expenses. Our app takes care of that problem as well. When the user creates a Group list, the app takes total expense into consideration and divides equally among the group members. It automatically calculates personal expense and shows up on your screen.
+    </string>
+    <string name="help7">
+        User Statistics: The app keeps a close track of what the users buy and their expenses. There will be an option where the user will be able to see statistics of his/her monthly expenses and the products he/she often buys. It also keeps a track of when the grocery was bought and depending on the predefined expiration date users will be notified.
+    </string>
+    <string name="help8">
+        Checklist: Let’s say you went for shopping, now how does the list help you in getting all the products that you need? Simple! When you create a list and save it, the app will provide an option to convert it into a checklist. This will help users in easily striking off the items that you have purchased as well as help the app to keep a track of what you bought and what you missed.
+    </string>
+    <string name="help9">
+        Product Scanner: The app will provide a facility to scan the product barcode. This will be useful when the user is shopping , user can scan the barcode which will capture product details and product will be removed from the checklist indicating that the product is bought. Once the product is scanned the app will receive cost, expiry and other important product details. Product cost and expiry will be then used for displaying statistics and expense splitting.
+    </string>
+    <string name="help10">
+        System Administration: The system shall be under control of an administrator who has every right to control and manage the whole system. Admin can manage accounts and update inventory.
+    </string>
+    <string name="about1">
+        Grocery Planner is created just for educational purpose as a project in Software Engineering assignment.
+    </string>
 </resources>
