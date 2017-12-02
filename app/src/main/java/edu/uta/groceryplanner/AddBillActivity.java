@@ -114,10 +114,11 @@ public class AddBillActivity extends AppCompatActivity {
                                         if(friendsBean1.getFriendId().equals(firebaseAuth.getCurrentUser().getUid())){
                                             if(friendsBean1.getOweStatus().equalsIgnoreCase("Owes You")){
                                                 double actual=friendsBean1.getOwePrice()-individual;
-                                                if(actual<0) {
+                                                Log.d("owe prcie","price:"+actual);
+                                                if(actual<0.0) {
                                                     friendsBean1.setOwePrice(Math.abs(actual));
                                                     friendsBean1.setOweStatus("You Owe");
-                                                }else if(actual>0){
+                                                }else if(actual>0.0){
                                                     friendsBean1.setOwePrice(actual);
                                                     friendsBean1.setOweStatus("Owes you");
                                                 }
