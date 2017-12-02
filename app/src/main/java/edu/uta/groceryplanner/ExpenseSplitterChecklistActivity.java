@@ -92,8 +92,11 @@ public class ExpenseSplitterChecklistActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot dataSnap : dataSnapshot.getChildren()){
                     ProductBean productBean = dataSnap.getValue(ProductBean.class);
-                    totalProductCost += productBean.getCost();
-                    productBeanList.add(productBean);
+                    if(productBean.getStatus().equalsIgnoreCase("Check")) {
+                        Log.d("PRODUCT NAME","PROUCT NAME:"+productBean.getProductName());
+                        totalProductCost += productBean.getCost();
+                        productBeanList.add(productBean);
+                    }
                 }
                 textViewIndividualAmount.setText("Individual Expense: "+totalProductCost/5.0+"$");
                 textViewTotalAmount.setText("Total Expense: "+totalProductCost+"$");

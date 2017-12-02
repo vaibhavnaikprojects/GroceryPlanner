@@ -45,11 +45,12 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
     private FloatingActionButton mainFab, personalFab, billFab;
     private Animation fab_open, fab_close, rotate_forward, rotate_backward;
     private Boolean isFabOpen = false;
-    DatabaseReference friendsRef, usersRef;
+    DatabaseReference friendsRef, usersRef, addFriendRef;
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
     private List<FriendsBean> friends;
     private static final int REQUEST_INVITE = 0;
+    private String userId;
     public FriendsFragment() {
         // Required empty public constructor
     }
@@ -63,6 +64,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
         }
         friendsRef = FirebaseDatabase.getInstance().getReference("friends").child(firebaseAuth.getCurrentUser().getUid());
         usersRef = FirebaseDatabase.getInstance().getReference("users");
+        addFriendRef = FirebaseDatabase.getInstance().getReference("friends");
     }
 
     @Override
@@ -137,6 +139,7 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
                                                     UserBean userBean = dataSnapshot.getValue(UserBean.class);
                                                     if("active".equalsIgnoreCase(userBean.getStatus())) {
                                                         friendsRef.child(userBean.getUserId()).setValue(new FriendsBean(userBean.getUserId(), userBean.getUserName(), userBean.getEmailId(), "resolved", 0));
+                                                        updateUserInFriendsList(textFriendEmail.getText().toString());
                                                         dialog.dismiss();
                                                     }
                                                     else
@@ -182,6 +185,26 @@ public class FriendsFragment extends Fragment implements View.OnClickListener {
                 .setEmailSubject(getString(R.string.invitation_email_subject))
                 .build();
         startActivityForResult(intent, REQUEST_INVITE);
+    }
+
+    public void updateUserInFriendsList(final String friendEmail){
+        usersRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snap: dataSnapshot.getChildren()){
+                    UserBean userBean = snap.getValue(UserBean.class);
+                    if(userBean.getEmailId().equalsIgnoreCase(friendEmail)){
+                        userId = userBean.getUserId();
+                        addFriendRef.child(userId).child(firebaseAuth.getCurrentUser().getUid()).setValue(new FriendsBean(firebaseAuth.getCurrentUser().getUid(),firebaseAuth.getCurrentUser().getDisplayName(),firebaseAuth.getCurrentUser().getEmail(),"resolved",0));
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     public void animateFAB() {

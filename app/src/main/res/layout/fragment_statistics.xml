@@ -45,8 +45,8 @@
             android:layout_height="match_parent"
             android:text="Monthly"
             android:textSize="20dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="20dp"
+            android:layout_marginTop="@dimen/text_margin"
+            android:layout_marginRight="@dimen/text_margin"
             android:textAlignment="viewEnd"/>
 
     </LinearLayout>
@@ -58,7 +58,6 @@
         android:backgroundTint="@color/white"
         android:layout_marginTop="60dp"
         android:minHeight="250dp"
-        android:minWidth="200dp"
         ></com.github.mikephil.charting.charts.PieChart>
 
     <android.support.v7.widget.RecyclerView
